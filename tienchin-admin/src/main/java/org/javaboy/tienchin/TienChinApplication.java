@@ -14,6 +14,6 @@ public class TienChinApplication {
     public static void main(String[] args) {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(TienChinApplication.class, args);
-        System.out.println("TienChin健身启动成功,这是主分支，我就修改一行");
+        System.out.println("TienChin健身启动成功,这是主分支，修改了。");
     }
 }
