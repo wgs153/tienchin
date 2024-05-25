@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.javaboy.tienchin.common.core.domain.entity.SysDept;
 import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.javaboy.tienchin.system.service.ISysPostService;

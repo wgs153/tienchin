@@ -1,4 +1,4 @@
-package org.javaboy.tienchin.channel.entity;
+package org.javaboy.tienchin.channel.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
