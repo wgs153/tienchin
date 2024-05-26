@@ -2,6 +2,8 @@ package org.javaboy.tienchin.channel.service;
 
 import org.javaboy.tienchin.channel.domain.Channel;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.javaboy.tienchin.channel.domain.vo.ChannelVO;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
 
 import java.util.List;
 
@@ -16,4 +18,6 @@ import java.util.List;
 public interface IChannelService extends IService<Channel> {
 
     List<Channel> selectChannelList();
+
+    AjaxResult addChannel(ChannelVO channelVO);
 }

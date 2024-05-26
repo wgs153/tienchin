@@ -17,10 +17,10 @@ export function getRole(roleId) {
   })
 }
 
-// 新增角色
-export function addRole(data) {
+// 新增渠道
+export function addChannel(data) {
   return request({
-    url: '/system/role',
+    url: '/tienchin/channel',
     method: 'post',
     data: data
   })
