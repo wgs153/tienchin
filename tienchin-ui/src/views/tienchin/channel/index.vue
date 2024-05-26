@@ -128,7 +128,7 @@
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-tooltip content="修改" placement="top" v-if="scope.row.roleId !== 1">
+          <el-tooltip content="修改" placement="top" >
             <el-button
                 type="text"
                 icon="Edit"
@@ -136,7 +136,7 @@
                 v-hasPermi="['tienchin:channel:edit']"
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="删除" placement="top" v-if="scope.row.roleId !== 1">
+          <el-tooltip content="删除" placement="top" >
             <el-button
                 type="text"
                 icon="Delete"
@@ -144,7 +144,7 @@
                 v-hasPermi="['tienchin:channel:remove']"
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="数据权限" placement="top" v-if="scope.row.roleId !== 1">
+          <el-tooltip content="数据权限" placement="top" >
             <el-button
                 type="text"
                 icon="CircleCheck"
@@ -152,7 +152,7 @@
                 v-hasPermi="['tienchin:channel:edit']"
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="分配用户" placement="top" v-if="scope.row.roleId !== 1">
+          <el-tooltip content="分配用户" placement="top" >
             <el-button
                 type="text"
                 icon="User"
@@ -183,21 +183,21 @@
             <el-radio
                 v-for="dict in channel_status"
                 :key="dict.value"
-                :label="dict.value"
+                :label="parseInt(dict.value)"
             >{{ dict.label }}
             </el-radio>
           </el-radio-group>
         </el-form-item>
 
         <el-form-item label="渠道类型" prop="type">
-        <el-select v-model="form.type" placeholder="请选择">
-          <el-option
-              v-for="dict in channel_type"
-              :key="dict.type"
-              :label="dict.label"
-              :value="dict.value">
-          </el-option>
-        </el-select>
+          <el-select v-model="form.type" placeholder="请选择">
+            <el-option
+                v-for="dict in channel_type"
+                :key="dict.type"
+                :label="dict.label"
+                :value="parseInt(dict.value)">
+            </el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item label="备注">
@@ -272,7 +272,7 @@ import {
   deptTreeSelect
 } from "@/api/system/role";
 import {roleMenuTreeselect, treeselect as menuTreeselect} from "@/api/system/menu";
-import {listChannel,addChannel} from "@/api/tienchin/channel";
+import {listChannel, addChannel, getChannel, updateChannel,delChannel} from "@/api/tienchin/channel";
 
 const router = useRouter();
 const {proxy} = getCurrentInstance();
@@ -354,9 +354,9 @@ function resetQuery() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const roleIds = row.roleId || ids.value;
-  proxy.$modal.confirm('是否确认删除角色编号为"' + roleIds + '"的数据项?').then(function () {
-    return delRole(roleIds);
+  const roleIds = row.channelId || ids.value;
+  proxy.$modal.confirm('是否确认删除渠道编号为"' + roleIds + '"的数据项?').then(function () {
+    return delChannel(roleIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
@@ -373,7 +373,7 @@ function handleExport() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.roleId);
+  ids.value = selection.map(item => item.channelId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -445,26 +445,15 @@ function handleAdd() {
   title.value = "添加渠道";
 }
 
-/** 修改角色 */
+/** 修改渠道 */
 function handleUpdate(row) {
+  //点击修改按钮，到此方法，重置表单数据，然后根据id查询渠道数据赋值给表单
   reset();
-  const roleId = row.roleId || ids.value;
-  const roleMenu = getRoleMenuTreeselect(roleId);
-  getRole(roleId).then(response => {
-    form.value = response.data;
-    form.value.roleSort = Number(form.value.roleSort);
+  const channelId = row.channelId || ids.value;
+  getChannel(channelId).then(response => {
     open.value = true;
-    nextTick(() => {
-      roleMenu.then((res) => {
-        let checkedKeys = res.checkedKeys;
-        checkedKeys.forEach((v) => {
-          nextTick(() => {
-            menuRef.value.setChecked(v, true, false);
-          });
-        });
-      });
-    });
-    title.value = "修改角色";
+    form.value = response.data;
+    title.value = "修改渠道";
   });
 }
 
@@ -531,15 +520,16 @@ function getMenuAllCheckedKeys() {
 function submitForm() {
   proxy.$refs["channelRef"].validate(valid => {
     if (valid) {
+      //删除无用数据
+      delete form.value.updateTime;
+      delete form.value.createTime;
       if (form.value.channelId != undefined) {
-        form.value.menuIds = getMenuAllCheckedKeys();
-        updateRole(form.value).then(response => {
+        updateChannel(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
       } else {
-
         addChannel(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;

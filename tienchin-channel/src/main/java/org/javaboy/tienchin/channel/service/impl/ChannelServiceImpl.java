@@ -1,6 +1,7 @@
 package org.javaboy.tienchin.channel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.javaboy.tienchin.channel.domain.Channel;
 import org.javaboy.tienchin.channel.domain.vo.ChannelVO;
 import org.javaboy.tienchin.channel.mapper.ChannelMapper;
@@ -47,5 +48,20 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
         channel.setDelFlag(0);
 
         return save(channel)?AjaxResult.success("添加成功"):AjaxResult.error("添加失败");
+    }
+
+    @Override
+    public AjaxResult updateChannel(ChannelVO channelVO) {
+        Channel channel = new Channel();
+        BeanUtils.copyProperties(channelVO,channel);
+        channel.setCreateTime(null);
+        return updateById(channel)?AjaxResult.success("修改成功"):AjaxResult.error("修改失败");
+    }
+
+    @Override
+    public boolean deleteChannelByIds(Long[] channelIds) {
+        UpdateWrapper<Channel> uw = new UpdateWrapper<>();
+        uw.lambda().set(Channel::getDelFlag,1).in(Channel::getChannelId,channelIds);
+        return update(uw);
     }
 }
