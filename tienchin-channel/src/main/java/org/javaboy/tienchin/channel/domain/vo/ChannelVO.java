@@ -2,6 +2,7 @@ package org.javaboy.tienchin.channel.domain.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
+import org.javaboy.tienchin.common.annotation.Excel;
 import org.javaboy.tienchin.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.NotBlank;

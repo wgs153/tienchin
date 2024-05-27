@@ -88,5 +88,18 @@ public class ChannelController extends BaseController {
         return toAjax(channelService.deleteChannelByIds(channelIds));
     }
 
+    /**
+     * 导出渠道
+     * @param response
+     * @param channelVO
+     */
+    @Log(title = "渠道管理", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('tienchin:channel:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, ChannelVO channelVO) {
+        List<Channel> list = channelService.selectChannelList(channelVO);
+        ExcelUtil<Channel> util = new ExcelUtil<Channel>(Channel.class);
+        util.exportExcel(response, list, "渠道数据");
+    }
 
 }

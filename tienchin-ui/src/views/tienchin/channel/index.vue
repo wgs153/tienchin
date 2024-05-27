@@ -372,9 +372,9 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/role/export", {
+  proxy.download("tienchin/channel/export", {
     ...queryParams.value,
-  }, `role_${new Date().getTime()}.xlsx`);
+  }, `channel_${new Date().getTime()}.xlsx`);
 }
 
 /** 多选框选中数据 */
