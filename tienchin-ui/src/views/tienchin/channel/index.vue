@@ -1,40 +1,46 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" v-show="showSearch" :inline="true">
-      <el-form-item label="角色名称" prop="roleName">
+      <el-form-item label="渠道名称" prop="channelName">
         <el-input
-            v-model="queryParams.roleName"
-            placeholder="请输入角色名称"
+            v-model="queryParams.channelName"
+            placeholder="请输入渠道名称"
             clearable
             style="width: 240px"
             @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="权限字符" prop="roleKey">
-        <el-input
-            v-model="queryParams.roleKey"
-            placeholder="请输入权限字符"
-            clearable
-            style="width: 240px"
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
+      <el-form-item label="渠道状态" prop="status">
         <el-select
             v-model="queryParams.status"
-            placeholder="角色状态"
+            placeholder="请选择渠道状态"
             clearable
             style="width: 240px"
         >
           <el-option
-              v-for="dict in sys_normal_disable"
+              v-for="dict in channel_status"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="创建时间" style="width: 308px">
+      <el-form-item label="渠道类型" prop="type">
+        <el-select
+            v-model="queryParams.type"
+            placeholder="请选择渠道类型"
+            clearable
+            style="width: 240px"
+        >
+          <el-option
+              v-for="dict in channel_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="更新时间" style="width: 308px">
         <el-date-picker
             v-model="dateRange"
             value-format="YYYY-MM-DD"
@@ -316,8 +322,8 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    roleName: undefined,
-    roleKey: undefined,
+    channelName: undefined,
+    type: undefined,
     status: undefined
   },
   rules: {

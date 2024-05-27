@@ -28,8 +28,8 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
     @Autowired
     ChannelMapper channelMapper;
     @Override
-    public List<Channel> selectChannelList() {
-        return channelMapper.selectChannelList();
+    public List<Channel> selectChannelList(ChannelVO channelVO) {
+        return channelMapper.selectChannelList(channelVO);
     }
 
     @Override

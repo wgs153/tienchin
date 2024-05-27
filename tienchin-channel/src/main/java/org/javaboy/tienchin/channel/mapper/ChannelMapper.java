@@ -17,6 +17,6 @@ import java.util.List;
  */
 public interface ChannelMapper extends BaseMapper<Channel> {
 
-    List<Channel> selectChannelList();
+    List<Channel> selectChannelList(ChannelVO channelVO);
 
 }

@@ -6,13 +6,16 @@ import org.javaboy.tienchin.channel.service.IChannelService;
 import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.core.domain.entity.SysRole;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -35,9 +38,9 @@ public class ChannelController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('tienchin:channel:list')")
     @GetMapping("/list")
-    public TableDataInfo list() {
+    public TableDataInfo list(ChannelVO channelVO) {
         startPage();
-        List<Channel> list = channelService.selectChannelList();
+        List<Channel> list = channelService.selectChannelList(channelVO);
         return getDataTable(list);
     }
 
@@ -84,4 +87,6 @@ public class ChannelController extends BaseController {
 
         return toAjax(channelService.deleteChannelByIds(channelIds));
     }
+
+
 }
