@@ -24,4 +24,6 @@ public interface IChannelService extends IService<Channel> {
     AjaxResult updateChannel(ChannelVO channelVO);
 
     boolean deleteChannelByIds(Long[] channelIds);
+
+    boolean importChannel(List<Channel> channelList, boolean updateSupport);
 }

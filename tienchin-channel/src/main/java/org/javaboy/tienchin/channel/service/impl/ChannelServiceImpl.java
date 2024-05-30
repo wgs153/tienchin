@@ -8,11 +8,13 @@ import org.javaboy.tienchin.channel.mapper.ChannelMapper;
 import org.javaboy.tienchin.channel.service.IChannelService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -63,5 +65,29 @@ public class ChannelServiceImpl extends ServiceImpl<ChannelMapper, Channel> impl
         UpdateWrapper<Channel> uw = new UpdateWrapper<>();
         uw.lambda().set(Channel::getDelFlag,1).in(Channel::getChannelId,channelIds);
         return update(uw);
+    }
+
+    @Override
+    public boolean importChannel(List<Channel> channelList, boolean updateSupport) {
+        if (updateSupport){
+            //设置更新用户名
+            List<Channel> channels = channelList.stream().map(s -> {
+                s.setUpdateBy(SecurityUtils.getUsername());
+                return s;
+            }).collect(Collectors.toList());
+            //根据id更新
+            updateBatchById(channels);
+        }else {
+            //设置创建用户名 更新用户名
+            List<Channel> channels = channelList.stream().map(s -> {
+                s.setCreateBy(SecurityUtils.getUsername());
+                s.setChannelId(null);
+                return s;
+            }).collect(Collectors.toList());
+            //批量插入
+            saveBatch(channels);
+        }
+
+        return false;
     }
 }

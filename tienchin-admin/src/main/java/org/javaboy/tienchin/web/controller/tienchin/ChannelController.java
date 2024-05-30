@@ -7,6 +7,7 @@ import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.domain.entity.SysRole;
+import org.javaboy.tienchin.common.core.domain.entity.SysUser;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
 import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -100,6 +102,25 @@ public class ChannelController extends BaseController {
         List<Channel> list = channelService.selectChannelList(channelVO);
         ExcelUtil<Channel> util = new ExcelUtil<Channel>(Channel.class);
         util.exportExcel(response, list, "渠道数据");
+    }
+
+    /**
+     * 渠道导入模板
+     * @param response
+     */
+    @PostMapping("/importTemplate")
+    public void importTemplate(HttpServletResponse response) {
+        ExcelUtil<Channel> util = new ExcelUtil<Channel>(Channel.class);
+        util.importTemplateExcel(response, "渠道数据");
+    }
+
+    @Log(title = "渠道管理", businessType = BusinessType.IMPORT)
+    @PreAuthorize("@ss.hasPermi('tienchin:channel:import')")
+    @PostMapping("/importData")
+    public AjaxResult importData(MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelUtil<Channel> util = new ExcelUtil<Channel>(Channel.class);
+        List<Channel> channelList = util.importExcel(file.getInputStream());
+        return AjaxResult.success(channelService.importChannel(channelList, updateSupport));
     }
 
 }

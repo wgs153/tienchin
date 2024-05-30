@@ -35,7 +35,7 @@ public class Channel implements Serializable {
     /**
      * 渠道状态
      */
-    @Excel(name = "渠道状态", readConverterExp = "1=正常,0=停用")
+    @Excel(name = "渠道状态", readConverterExp = "1=正常,0=禁用")
     private Byte status;
 
     /**
@@ -47,7 +47,7 @@ public class Channel implements Serializable {
     /**
      * 渠道类型：1线上渠道2：线下渠道
      */
-    @Excel(name = "渠道类型", readConverterExp = "1线上渠道2：线下渠道")
+    @Excel(name = "渠道类型", readConverterExp = "1=线上渠道,2=线下渠道")
     private Integer type;
 
     private String createBy;
