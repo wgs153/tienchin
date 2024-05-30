@@ -105,7 +105,8 @@
             icon="Upload"
             @click="handleImport"
             v-hasPermi="['tienchin:channel:import']"
-        >导入</el-button>
+        >导入
+        </el-button>
       </el-col>
 
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
@@ -144,7 +145,7 @@
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-tooltip content="修改" placement="top" >
+          <el-tooltip content="修改" placement="top">
             <el-button
                 type="text"
                 icon="Edit"
@@ -152,7 +153,7 @@
                 v-hasPermi="['tienchin:channel:edit']"
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="删除" placement="top" >
+          <el-tooltip content="删除" placement="top">
             <el-button
                 type="text"
                 icon="Delete"
@@ -160,22 +161,7 @@
                 v-hasPermi="['tienchin:channel:remove']"
             ></el-button>
           </el-tooltip>
-          <el-tooltip content="数据权限" placement="top" >
-            <el-button
-                type="text"
-                icon="CircleCheck"
-                @click="handleDataScope(scope.row)"
-                v-hasPermi="['tienchin:channel:edit']"
-            ></el-button>
-          </el-tooltip>
-          <el-tooltip content="分配用户" placement="top" >
-            <el-button
-                type="text"
-                icon="User"
-                @click="handleAuthUser(scope.row)"
-                v-hasPermi="['tienchin:channel:edit']"
-            ></el-button>
-          </el-tooltip>
+
         </template>
       </el-table-column>
     </el-table>
@@ -287,15 +273,20 @@
           :auto-upload="false"
           drag
       >
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+        <el-icon class="el-icon--upload">
+          <upload-filled/>
+        </el-icon>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <template #tip>
           <div class="el-upload__tip text-center">
             <div class="el-upload__tip">
-              <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的渠道数据
+              <el-checkbox v-model="upload.updateSupport"/>
+              是否更新已经存在的渠道数据
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
-            <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;" @click="importTemplate">下载模板</el-link>
+            <el-link type="primary" :underline="false" style="font-size:12px;vertical-align: baseline;"
+                     @click="importTemplate">下载模板
+            </el-link>
           </div>
         </template>
       </el-upload>
@@ -311,23 +302,14 @@
 </template>
 
 <script setup name="Channel">
-import {
-  changeRoleStatus,
-  dataScope,
-  getRole,
-  deptTreeSelect
-} from "@/api/system/role";
-import { getToken } from "@/utils/auth";
-import {roleMenuTreeselect, treeselect as menuTreeselect} from "@/api/system/menu";
-import {listChannel, addChannel, getChannel, updateChannel,delChannel} from "@/api/tienchin/channel";
+import {getToken} from "@/utils/auth";
+import {listChannel, addChannel, getChannel, updateChannel, delChannel} from "@/api/tienchin/channel";
 
-const router = useRouter();
 const {proxy} = getCurrentInstance();
 const {
-  sys_normal_disable,
   channel_type,
   channel_status
-} = proxy.useDict("sys_normal_disable", "channel_type", "channel_status");
+} = proxy.useDict("channel_type", "channel_status");
 
 const channelList = ref([]);
 const open = ref(false);
@@ -339,15 +321,7 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const dateRange = ref([]);
-const menuOptions = ref([]);
-const menuExpand = ref(false);
-const menuNodeAll = ref(false);
-const deptExpand = ref(true);
-const deptNodeAll = ref(false);
-const deptOptions = ref([]);
-const openDataScope = ref(false);
-const menuRef = ref(null);
-const deptRef = ref(null);
+
 /*** 渠道导入参数 */
 const upload = reactive({
   // 是否显示弹出层（渠道导入）
@@ -359,7 +333,7 @@ const upload = reactive({
   // 是否更新已经存在的渠道数据
   updateSupport: 0,
   // 设置上传的请求头部
-  headers: { Authorization: "Bearer " + getToken() },
+  headers: {Authorization: "Bearer " + getToken()},
   // 上传的地址
   url: import.meta.env.VITE_APP_BASE_API + "/tienchin/channel/importData"
 });
@@ -390,7 +364,6 @@ const data = reactive({
 });
 
 const {queryParams, form, rules} = toRefs(data);
-
 
 
 /** 查询渠道列表 */
@@ -434,16 +407,18 @@ function handleExport() {
     ...queryParams.value,
   }, `channel_${new Date().getTime()}.xlsx`);
 }
+
 /** 导入按钮操作 */
 function handleImport() {
   upload.title = "渠道导入";
   upload.open = true;
 }
+
 /** 下载模板操作 */
 function importTemplate() {
-  proxy.download("tienchin/channel/importTemplate", {
-  }, `channel_template_${new Date().getTime()}.xlsx`);
+  proxy.download("tienchin/channel/importTemplate", {}, `channel_template_${new Date().getTime()}.xlsx`);
 }
+
 /**文件上传中处理 */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
@@ -453,7 +428,7 @@ const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
   upload.isUploading = false;
   proxy.$refs["uploadRef"].handleRemove(file);
-  proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", {dangerouslyUseHTMLString: true});
   getList();
 };
 
@@ -463,54 +438,6 @@ function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.channelId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
-}
-
-/** 角色状态修改 */
-function handleStatusChange(row) {
-  let text = row.status === "0" ? "启用" : "停用";
-  proxy.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗?').then(function () {
-    return changeRoleStatus(row.roleId, row.status);
-  }).then(() => {
-    proxy.$modal.msgSuccess(text + "成功");
-  }).catch(function () {
-    row.status = row.status === "0" ? "1" : "0";
-  });
-}
-
-/** 更多操作 */
-function handleCommand(command, row) {
-  switch (command) {
-    case "handleDataScope":
-      handleDataScope(row);
-      break;
-    case "handleAuthUser":
-      handleAuthUser(row);
-      break;
-    default:
-      break;
-  }
-}
-
-/** 分配用户 */
-function handleAuthUser(row) {
-  router.push("/system/role-auth/user/" + row.roleId);
-}
-
-/** 查询菜单树结构 */
-function getMenuTreeselect() {
-  menuTreeselect().then(response => {
-    menuOptions.value = response.data;
-  });
-}
-
-/** 所有部门节点数据 */
-function getDeptAllCheckedKeys() {
-  // 目前被选中的部门节点
-  let checkedKeys = deptRef.value.getCheckedKeys();
-  // 半选中的部门节点
-  let halfCheckedKeys = deptRef.value.getHalfCheckedKeys();
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-  return checkedKeys;
 }
 
 /** 重置新增的表单以及其他数据  */
@@ -544,64 +471,6 @@ function handleUpdate(row) {
   });
 }
 
-/** 根据角色ID查询菜单树结构 */
-function getRoleMenuTreeselect(roleId) {
-  return roleMenuTreeselect(roleId).then(response => {
-    menuOptions.value = response.menus;
-    return response;
-  });
-}
-
-/** 根据角色ID查询部门树结构 */
-function getDeptTree(roleId) {
-  return deptTreeSelect(roleId).then(response => {
-    deptOptions.value = response.depts;
-    return response;
-  });
-}
-
-/** 树权限（展开/折叠）*/
-function handleCheckedTreeExpand(value, type) {
-  if (type == "menu") {
-    let treeList = menuOptions.value;
-    for (let i = 0; i < treeList.length; i++) {
-      menuRef.value.store.nodesMap[treeList[i].id].expanded = value;
-    }
-  } else if (type == "dept") {
-    let treeList = deptOptions.value;
-    for (let i = 0; i < treeList.length; i++) {
-      deptRef.value.store.nodesMap[treeList[i].id].expanded = value;
-    }
-  }
-}
-
-/** 树权限（全选/全不选） */
-function handleCheckedTreeNodeAll(value, type) {
-  if (type == "menu") {
-    menuRef.value.setCheckedNodes(value ? menuOptions.value : []);
-  } else if (type == "dept") {
-    deptRef.value.setCheckedNodes(value ? deptOptions.value : []);
-  }
-}
-
-/** 树权限（父子联动） */
-function handleCheckedTreeConnect(value, type) {
-  if (type == "menu") {
-    form.value.menuCheckStrictly = value ? true : false;
-  } else if (type == "dept") {
-    form.value.deptCheckStrictly = value ? true : false;
-  }
-}
-
-/** 所有菜单节点数据 */
-function getMenuAllCheckedKeys() {
-  // 目前被选中的菜单节点
-  let checkedKeys = menuRef.value.getCheckedKeys();
-  // 半选中的菜单节点
-  let halfCheckedKeys = menuRef.value.getHalfCheckedKeys();
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-  return checkedKeys;
-}
 
 /** 提交按钮 */
 function submitForm() {
@@ -627,58 +496,15 @@ function submitForm() {
     }
   });
 }
+
 /** 提交上传文件 */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 };
+
 /** 取消按钮 */
 function cancel() {
   open.value = false;
-  reset();
-}
-
-/** 选择角色权限范围触发 */
-function dataScopeSelectChange(value) {
-  if (value !== "2") {
-    deptRef.value.setCheckedKeys([]);
-  }
-}
-
-/** 分配数据权限操作 */
-function handleDataScope(row) {
-  reset();
-  const deptTreeSelect = getDeptTree(row.roleId);
-  getRole(row.roleId).then(response => {
-    form.value = response.data;
-    openDataScope.value = true;
-    nextTick(() => {
-      deptTreeSelect.then(res => {
-        nextTick(() => {
-          if (deptRef.value) {
-            deptRef.value.setCheckedKeys(res.checkedKeys);
-          }
-        });
-      });
-    });
-    title.value = "分配数据权限";
-  });
-}
-
-/** 提交按钮（数据权限） */
-function submitDataScope() {
-  if (form.value.roleId != undefined) {
-    form.value.deptIds = getDeptAllCheckedKeys();
-    dataScope(form.value).then(response => {
-      proxy.$modal.msgSuccess("修改成功");
-      openDataScope.value = false;
-      getList();
-    });
-  }
-}
-
-/** 取消按钮（数据权限）*/
-function cancelDataScope() {
-  openDataScope.value = false;
   reset();
 }
 
