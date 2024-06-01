@@ -1,9 +1,7 @@
-package org.javaboy.tienchin.activity.domain;
+package org.javaboy.tienchin.activity.domain.vo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
+import org.javaboy.tienchin.common.core.domain.BaseEntity;
+
 import java.time.LocalDateTime;
 
 /**
@@ -14,15 +12,12 @@ import java.time.LocalDateTime;
  * @author javaboy
  * @since 2024-06-01
  */
-@TableName("tienchin_activity")
-public class Activity implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+public class ActivityVO extends BaseEntity {
 
     /**
      * 序号
      */
-    @TableId(value = "activity_id", type = IdType.AUTO)
     private Integer activityId;
 
     /**
@@ -34,6 +29,11 @@ public class Activity implements Serializable {
      * 渠道id
      */
     private Integer channelId;
+
+    /**
+     * 渠道名称
+     */
+    private String channelName;
 
     /**
      * 活动简介
@@ -71,27 +71,9 @@ public class Activity implements Serializable {
     private LocalDateTime endTime;
 
     /**
-     * 活动备注
-     */
-    private String remark;
-    /**
      * 删除标志
      */
     private Integer delFlag;
-
-    /**
-     * 创建者
-     */
-    private String createBy;
-
-    private LocalDateTime createTime;
-
-    /**
-     * 更新者
-     */
-    private String updateBy;
-
-    private LocalDateTime updateTime;
 
     public Integer getActivityId() {
         return activityId;
@@ -115,6 +97,14 @@ public class Activity implements Serializable {
 
     public void setChannelId(Integer channelId) {
         this.channelId = channelId;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     public String getInfo() {
@@ -156,13 +146,6 @@ public class Activity implements Serializable {
     public void setStatus(Integer status) {
         this.status = status;
     }
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
 
     public LocalDateTime getBeginTime() {
         return beginTime;
@@ -180,65 +163,30 @@ public class Activity implements Serializable {
         this.endTime = endTime;
     }
 
-    public String getRemark() {
-        return remark;
+
+    public Integer getDelFlag() {
+        return delFlag;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
+    public void setDelFlag(Integer delFlag) {
+        this.delFlag = delFlag;
     }
 
     @Override
     public String toString() {
-        return "Activity{" +
-            "activityId = " + activityId +
-            ", name = " + name +
-            ", channelId = " + channelId +
-            ", info = " + info +
-            ", type = " + type +
-            ", discount = " + discount +
-            ", voucher = " + voucher +
-            ", status = " + status +
-            ", beginTime = " + beginTime +
-            ", endTime = " + endTime +
-            ", remark = " + remark +
-            ", createBy = " + createBy +
-            ", createTime = " + createTime +
-            ", updateBy = " + updateBy +
-            ", updateTime = " + updateTime +
-            ", delFlag = " + delFlag +
-        "}";
+        return "ActivityVO{" +
+                "activityId=" + activityId +
+                ", name='" + name + '\'' +
+                ", channelId=" + channelId +
+                ", channelName=" + channelName +
+                ", info='" + info + '\'' +
+                ", type=" + type +
+                ", discount=" + discount +
+                ", voucher=" + voucher +
+                ", status=" + status +
+                ", beginTime=" + beginTime +
+                ", endTime=" + endTime +
+                ", delFlag=" + delFlag +
+                '}';
     }
 }

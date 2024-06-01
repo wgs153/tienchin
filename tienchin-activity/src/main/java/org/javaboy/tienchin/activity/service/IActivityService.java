@@ -2,6 +2,9 @@ package org.javaboy.tienchin.activity.service;
 
 import org.javaboy.tienchin.activity.domain.Activity;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IActivityService extends IService<Activity> {
 
+    List<ActivityVO> selectActivityList();
 }

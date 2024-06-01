@@ -6,8 +6,6 @@ import org.javaboy.tienchin.channel.service.IChannelService;
 import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
-import org.javaboy.tienchin.common.core.domain.entity.SysRole;
-import org.javaboy.tienchin.common.core.domain.entity.SysUser;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
 import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
