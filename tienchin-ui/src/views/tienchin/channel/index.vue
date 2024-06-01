@@ -141,27 +141,22 @@
           <sapn>{{ parseTime(scope.row.updateTime) }}</sapn>
         </template>
       </el-table-column>
-      <el-table-column label="备注" prop="remark" :show-overflow-tooltip="true" width="250"/>
+      <el-table-column label="备注" prop="remark" :show-overflow-tooltip="true" width="150"/>
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-tooltip content="修改" placement="top">
-            <el-button
-                type="text"
-                icon="Edit"
-                @click="handleUpdate(scope.row)"
-                v-hasPermi="['tienchin:channel:edit']"
-            ></el-button>
-          </el-tooltip>
-          <el-tooltip content="删除" placement="top">
-            <el-button
-                type="text"
-                icon="Delete"
-                @click="handleDelete(scope.row)"
-                v-hasPermi="['tienchin:channel:remove']"
-            ></el-button>
-          </el-tooltip>
-
+          <el-button
+              type="text"
+              icon="Edit"
+              @click="handleUpdate(scope.row)"
+              v-hasPermi="['tienchin:channel:edit']"
+          >修改</el-button>
+          <el-button
+              type="text"
+              icon="Delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['tienchin:channel:remove']"
+          >删除</el-button>
         </template>
       </el-table-column>
     </el-table>
