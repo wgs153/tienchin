@@ -1,7 +1,9 @@
 package org.javaboy.tienchin.activity.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.javaboy.tienchin.common.core.domain.BaseEntity;
 
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 
 /**
@@ -23,6 +25,8 @@ public class ActivityVO extends BaseEntity {
     /**
      * 活动名称
      */
+    @NotBlank(message = "{activity.name.NotBlank}")
+    @Size(min = 0, max = 5, message = "{activity.name.Size}")
     private String name;
 
     /**
@@ -33,41 +37,55 @@ public class ActivityVO extends BaseEntity {
     /**
      * 渠道名称
      */
+    @NotBlank(message = "{activity.channelName.NotBlank}")
+    @Size(min = 0, max = 10, message = "{activity.channelName.Size}")
     private String channelName;
 
     /**
      * 活动简介
      */
+    @NotBlank(message = "{activity.info.NotBlank}")
+    @Size(min = 0, max = 225, message = "{activity.info.Size}")
     private String info;
 
     /**
      * 活动类型
      */
+    @NotNull(message = "{activity.type.NotNull}")
     private Integer type;
 
     /**
      * 折扣券
      */
+    @Min(value=0,message = "{activity.discount.Min}")
+    @Max(value=10,message = "{activity.discount.Max}")
     private Double discount;
 
     /**
      * 代金券
      */
+    @Min(value=0,message = "{activity.voucher.Min}")
     private Double voucher;
 
     /**
      * 活动状态 0禁用 1正常
      */
+    @Min(value=0,message = "{activity.status.Min}")
+    @Max(value=1,message = "{activity.status.Max}")
     private Integer status;
 
     /**
      * 活动开始时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "{activity.beginTime.NotNull}")
     private LocalDateTime beginTime;
 
     /**
      * 活动结束时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @NotNull(message = "{activity.endTime.NotNull}")
     private LocalDateTime endTime;
 
     /**

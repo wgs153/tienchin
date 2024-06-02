@@ -6,6 +6,8 @@ import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.mapper.ActivityMapper;
 import org.javaboy.tienchin.activity.service.IActivityService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.utils.bean.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,9 +32,19 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
         expireActivity();
         return activityMapper.selectActivityList();
     }
+
     private boolean expireActivity() {
         UpdateWrapper<Activity> uw = new UpdateWrapper<>();
         uw.lambda().set(Activity::getStatus, 0).eq(Activity::getStatus, 1).lt(Activity::getEndTime, LocalDateTime.now());
         return update(uw);
+    }
+
+    @Override
+    public AjaxResult addActivity(ActivityVO activityVO) {
+        Activity activity = new Activity();
+        BeanUtils.copyProperties(activityVO, activity);
+        // 默认状态为进行中
+        activity.setStatus(1);
+        return save(activity) ? AjaxResult.success("添加成功") : AjaxResult.error("添加失败");
     }
 }
