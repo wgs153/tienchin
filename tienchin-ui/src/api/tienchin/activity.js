@@ -8,6 +8,14 @@ export function listActivity(query) {
     params: query
   })
 }
+// 查询渠道列表
+export function listChannel(){
+  return request({
+    url: '/tienchin/activity/channel/list',
+    method: 'get'
+  })
+}
+
 
 // 查询岗位详细
 export function getPost(postId) {
@@ -17,10 +25,10 @@ export function getPost(postId) {
   })
 }
 
-// 新增岗位
-export function addPost(data) {
+// 新增活动
+export function addActivity(data) {
   return request({
-    url: '/system/post',
+    url: '/tienchin/activity',
     method: 'post',
     data: data
   })

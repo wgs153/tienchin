@@ -37,8 +37,6 @@ public class ActivityVO extends BaseEntity {
     /**
      * 渠道名称
      */
-    @NotBlank(message = "{activity.channelName.NotBlank}")
-    @Size(min = 0, max = 10, message = "{activity.channelName.Size}")
     private String channelName;
 
     /**
