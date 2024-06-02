@@ -76,17 +76,17 @@
     </el-row>
 
     <el-table v-loading="loading" :data="activityList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="活动编号" align="center" prop="activityId" />
-      <el-table-column label="活动名称" align="center" prop="name" />
-      <el-table-column label="渠道名称" align="center" prop="channelName" />
-      <el-table-column label="活动简介" :show-overflow-tooltip="true" align="center" prop="info" />
-      <el-table-column label="活动类型" align="center">
+      <el-table-column type="selection" width="50" align="center" />
+      <el-table-column label="活动编号" align="center" prop="activityId" width="80"/>
+      <el-table-column label="活动名称" align="center" prop="name" width="80"/>
+      <el-table-column label="渠道名称" align="center" prop="channelName" width="80"/>
+      <el-table-column label="活动简介" :show-overflow-tooltip="true" align="center" prop="info" width="200"/>
+      <el-table-column label="活动类型" align="center" width="80">
         <template #default="scope">
           <dict-tag :options="activity_type" :value="scope.row.type" />
         </template>
       </el-table-column>
-      <el-table-column label="活动明细" align="center">
+      <el-table-column label="活动明细" align="center" width="120">
         <template #default="scope">
           <div v-if="scope.row.type==1">
             折扣券/{{scope.row.discount}}折
@@ -96,7 +96,7 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column label="活动状态" align="center">
+      <el-table-column label="活动状态" align="center" width="80">
         <template #default="scope">
           <dict-tag :options="activity_status" :value="scope.row.status" />
         </template>
@@ -113,7 +113,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" width="150">
+      <el-table-column label="操作" align="center" class-name="small-padding fixed-width" >
         <template #default="scope">
           <el-button
               type="text"

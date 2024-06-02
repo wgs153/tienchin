@@ -1,5 +1,6 @@
 package org.javaboy.tienchin.activity.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.javaboy.tienchin.activity.domain.Activity;
 import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.mapper.ActivityMapper;
@@ -8,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -25,6 +27,12 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
     ActivityMapper activityMapper;
     @Override
     public List<ActivityVO> selectActivityList() {
+        expireActivity();
         return activityMapper.selectActivityList();
+    }
+    private boolean expireActivity() {
+        UpdateWrapper<Activity> uw = new UpdateWrapper<>();
+        uw.lambda().set(Activity::getStatus, 0).eq(Activity::getStatus, 1).lt(Activity::getEndTime, LocalDateTime.now());
+        return update(uw);
     }
 }

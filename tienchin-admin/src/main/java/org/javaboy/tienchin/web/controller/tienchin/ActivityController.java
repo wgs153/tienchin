@@ -1,7 +1,5 @@
 package org.javaboy.tienchin.web.controller.tienchin;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.javaboy.tienchin.activity.domain.Activity;
 import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.service.IActivityService;
 import org.javaboy.tienchin.common.core.controller.BaseController;
