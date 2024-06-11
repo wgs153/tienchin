@@ -20,4 +20,6 @@ public interface IActivityService extends IService<Activity> {
     List<ActivityVO> selectActivityList();
 
     AjaxResult addActivity(ActivityVO activityVO);
+
+    AjaxResult updateActivity(ActivityVO activityVO);
 }

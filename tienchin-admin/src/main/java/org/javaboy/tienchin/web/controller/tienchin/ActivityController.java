@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.service.IActivityService;
+import org.javaboy.tienchin.activity.validator.CreateGroup;
+import org.javaboy.tienchin.activity.validator.EditGroup;
 import org.javaboy.tienchin.channel.domain.Channel;
 import org.javaboy.tienchin.channel.domain.vo.ChannelVO;
 import org.javaboy.tienchin.channel.service.IChannelService;
@@ -68,8 +70,19 @@ public class ActivityController extends BaseController {
     @PreAuthorize("@ss.hasPermi('tienchin:activity:create')")
     @Log(title = "活动管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody ActivityVO activityVO){
+    public AjaxResult add(@Validated(CreateGroup.class) @RequestBody ActivityVO activityVO){
         return activityService.addActivity(activityVO);
+    }
+
+    /**
+     * 修改活动
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('tienchin:activity:edit')")
+    @Log(title = "活动管理", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult update(@Validated(EditGroup.class) @RequestBody ActivityVO activityVO){
+        return activityService.updateActivity(activityVO);
     }
 
 

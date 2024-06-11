@@ -1,6 +1,8 @@
 package org.javaboy.tienchin.activity.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import org.javaboy.tienchin.activity.validator.CreateGroup;
+import org.javaboy.tienchin.activity.validator.EditGroup;
 import org.javaboy.tienchin.common.core.domain.BaseEntity;
 
 import javax.validation.constraints.*;
@@ -20,13 +22,14 @@ public class ActivityVO extends BaseEntity {
     /**
      * 序号
      */
+    @NotNull(message = "{activity.activityId.NotNull}",groups = {EditGroup.class})
     private Integer activityId;
 
     /**
      * 活动名称
      */
-    @NotBlank(message = "{activity.name.NotBlank}")
-    @Size(min = 0, max = 5, message = "{activity.name.Size}")
+    @NotBlank(message = "{activity.name.NotBlank}",groups = {CreateGroup.class,EditGroup.class})
+    @Size(min = 0, max = 5, message = "{activity.name.Size}",groups = {CreateGroup.class,EditGroup.class})
     private String name;
 
     /**
@@ -42,48 +45,48 @@ public class ActivityVO extends BaseEntity {
     /**
      * 活动简介
      */
-    @NotBlank(message = "{activity.info.NotBlank}")
-    @Size(min = 0, max = 225, message = "{activity.info.Size}")
+    @NotBlank(message = "{activity.info.NotBlank}",groups = {CreateGroup.class,EditGroup.class})
+    @Size(min = 0, max = 225, message = "{activity.info.Size}",groups = {CreateGroup.class,EditGroup.class})
     private String info;
 
     /**
      * 活动类型
      */
-    @NotNull(message = "{activity.type.NotNull}")
+    @NotNull(message = "{activity.type.NotNull}",groups = {CreateGroup.class,EditGroup.class})
     private Integer type;
 
     /**
      * 折扣券
      */
-    @Min(value=0,message = "{activity.discount.Min}")
-    @Max(value=10,message = "{activity.discount.Max}")
+    @Min(value=0,message = "{activity.discount.Min}",groups = {CreateGroup.class,EditGroup.class})
+    @Max(value=10,message = "{activity.discount.Max}",groups = {CreateGroup.class,EditGroup.class})
     private Double discount;
 
     /**
      * 代金券
      */
-    @Min(value=0,message = "{activity.voucher.Min}")
+    @Min(value=0,message = "{activity.voucher.Min}",groups = {CreateGroup.class,EditGroup.class})
     private Double voucher;
 
     /**
      * 活动状态 0禁用 1正常
      */
-    @Min(value=0,message = "{activity.status.Min}")
-    @Max(value=1,message = "{activity.status.Max}")
+    @Min(value=0,message = "{activity.status.Min}",groups = {CreateGroup.class,EditGroup.class})
+    @Max(value=1,message = "{activity.status.Max}",groups = {CreateGroup.class,EditGroup.class})
     private Integer status;
 
     /**
      * 活动开始时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotNull(message = "{activity.beginTime.NotNull}")
+    @NotNull(message = "{activity.beginTime.NotNull}",groups = {CreateGroup.class,EditGroup.class})
     private LocalDateTime beginTime;
 
     /**
      * 活动结束时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @NotNull(message = "{activity.endTime.NotNull}")
+    @NotNull(message = "{activity.endTime.NotNull}",groups = {CreateGroup.class,EditGroup.class})
     private LocalDateTime endTime;
 
     /**
