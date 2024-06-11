@@ -56,4 +56,12 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
         activity.setUpdateBy(SecurityUtils.getUsername());
         return updateById(activity)?AjaxResult.success("修改成功") : AjaxResult.error("修改失败");
     }
+
+    @Override
+    public ActivityVO getActivityVOById(Integer activityId) {
+        Activity activity = getById(activityId);
+        ActivityVO activityVO = new ActivityVO();
+        BeanUtils.copyProperties(activity, activityVO);
+        return activityVO;
+    }
 }

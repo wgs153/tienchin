@@ -60,7 +60,7 @@ public class ChannelController extends BaseController {
      * @param channelVO
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('tienchin:channel:create')")
+    @PreAuthorize("@ss.hasPermi('tienchin:channel:edit')")
     @Log(title = "渠道管理", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult update(@Validated @RequestBody ChannelVO channelVO) {
@@ -69,7 +69,7 @@ public class ChannelController extends BaseController {
     }
 
 
-    @PreAuthorize("@ss.hasPermi('tienchin:channel:list')")
+    @PreAuthorize("@ss.hasPermi('tienchin:channel:edit')")
     @GetMapping("/{channelId}")
     public AjaxResult getInfo(@PathVariable Long channelId){
         return AjaxResult.success(channelService.getById(channelId));

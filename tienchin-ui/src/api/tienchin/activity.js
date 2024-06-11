@@ -17,10 +17,10 @@ export function listChannel(){
 }
 
 
-// 查询岗位详细
-export function getPost(postId) {
+// 查询活动详细
+export function getPost(activityId) {
   return request({
-    url: '/system/post/' + postId,
+    url: '/tienchin/activity/' + activityId,
     method: 'get'
   })
 }
@@ -34,10 +34,10 @@ export function addActivity(data) {
   })
 }
 
-// 修改岗位
-export function updatePost(data) {
+// 修改活动
+export function updateActivity(data) {
   return request({
-    url: '/system/post',
+    url: '/tienchin/activity',
     method: 'put',
     data: data
   })

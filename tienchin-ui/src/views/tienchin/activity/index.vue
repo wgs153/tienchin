@@ -40,7 +40,7 @@
             plain
             icon="Plus"
             @click="handleAdd"
-            v-hasPermi="['tienchin:activity:add']"
+            v-hasPermi="['tienchin:activity:create']"
         >新增
         </el-button>
       </el-col>
@@ -123,14 +123,14 @@
               type="text"
               icon="Edit"
               @click="handleUpdate(scope.row)"
-              v-hasPermi="['system:post:edit']"
+              v-hasPermi="['tienchin:activity:edit']"
           >修改
           </el-button>
           <el-button
               type="text"
               icon="Delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['system:post:remove']"
+              v-hasPermi="['tienchin:activity:remove']"
           >删除
           </el-button>
         </template>
@@ -200,7 +200,7 @@
                     v-for="dict in activity_type"
                     :key="dict.value"
                     :label="dict.label"
-                    :value="dict.value">
+                    :value="parseInt(dict.value)">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -227,8 +227,8 @@
 </template>
 
 <script setup name="Post">
-import {listPost, addPost, delPost, getPost, updatePost} from "@/api/system/post";
-import {listActivity, listChannel,addActivity} from "@/api/tienchin/activity";
+import {listPost, addPost, delPost, updatePost} from "@/api/system/post";
+import {listActivity, listChannel,addActivity,getPost,updateActivity} from "@/api/tienchin/activity";
 
 const {proxy} = getCurrentInstance();
 const {sys_normal_disable, activity_type, activity_status} = proxy.useDict("activity_type", "activity_status");
@@ -310,7 +310,7 @@ function resetQuery() {
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.postId);
+  ids.value = selection.map(item => item.activityId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
@@ -327,11 +327,16 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  const postId = row.postId || ids.value;
-  getPost(postId).then(response => {
+  const activityId = row.activityId || ids.value;
+  getPost(activityId).then(response => {
     form.value = response.data;
+    form.value.activityTime=new Array();
+    form.value.activityTime.push(form.value.beginTime);
+    form.value.activityTime.push(form.value.endTime);
+    // 加载渠道列表
+    handleChannelList();
     open.value = true;
-    title.value = "修改岗位";
+    title.value = "修改活动";
   });
 }
 
@@ -339,8 +344,14 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["activityRef"].validate(valid => {
     if (valid) {
-      if (form.value.postId != undefined) {
-        updatePost(form.value).then(response => {
+      if (form.value.activityId != undefined) {
+        form.value.beginTime=form.value.activityTime[0];
+        form.value.endTime=form.value.activityTime[1];
+        delete form.value.activityTime;
+        delete form.value.createTime;
+        delete form.value.updateTime;
+
+        updateActivity(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
