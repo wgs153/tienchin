@@ -44,9 +44,9 @@ export function updateActivity(data) {
 }
 
 // 删除岗位
-export function delPost(postId) {
+export function delActivity(activityIds) {
   return request({
-    url: '/system/post/' + postId,
+    url: '/tienchin/activity/' + activityIds,
     method: 'delete'
   })
 }

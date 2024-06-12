@@ -64,4 +64,11 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
         BeanUtils.copyProperties(activity, activityVO);
         return activityVO;
     }
+
+    @Override
+    public boolean deleteActivityByIds(Long[] activityIds) {
+        UpdateWrapper<Activity> uw = new UpdateWrapper<>();
+        uw.lambda().set(Activity::getDelFlag,1).in(Activity::getActivityId, activityIds);
+        return update(uw);
+    }
 }

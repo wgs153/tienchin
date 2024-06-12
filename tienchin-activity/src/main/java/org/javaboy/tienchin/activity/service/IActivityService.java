@@ -24,4 +24,6 @@ public interface IActivityService extends IService<Activity> {
     AjaxResult updateActivity(ActivityVO activityVO);
 
     ActivityVO getActivityVOById(Integer activityId);
+
+    boolean deleteActivityByIds(Long[] activityIds);
 }

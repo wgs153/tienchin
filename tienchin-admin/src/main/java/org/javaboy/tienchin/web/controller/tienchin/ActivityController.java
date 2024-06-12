@@ -91,6 +91,17 @@ public class ActivityController extends BaseController {
         return AjaxResult.success(activityService.getActivityVOById(activityId));
     }
 
+    /**
+     * 删除活动
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('tienchin:activity:remove')")
+    @Log(title = "活动管理", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{activityIds}")
+    public AjaxResult deleteById(@PathVariable Long[] activityIds){
+        return toAjax(activityService.deleteActivityByIds(activityIds));
+    }
+
 
 
 }

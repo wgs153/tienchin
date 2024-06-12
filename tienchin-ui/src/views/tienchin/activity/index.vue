@@ -228,7 +228,7 @@
 
 <script setup name="Post">
 import {listPost, addPost, delPost, updatePost} from "@/api/system/post";
-import {listActivity, listChannel,addActivity,getPost,updateActivity} from "@/api/tienchin/activity";
+import {listActivity, listChannel,addActivity,getPost,updateActivity,delActivity} from "@/api/tienchin/activity";
 
 const {proxy} = getCurrentInstance();
 const {sys_normal_disable, activity_type, activity_status} = proxy.useDict("activity_type", "activity_status");
@@ -372,9 +372,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const postIds = row.postId || ids.value;
-  proxy.$modal.confirm('是否确认删除岗位编号为"' + postIds + '"的数据项？').then(function () {
-    return delPost(postIds);
+  const activityIds = row.activityId || ids.value;
+  proxy.$modal.confirm('是否确认删除活动编号为"' + activityIds + '"的数据项？').then(function () {
+    return delActivity(activityIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");
