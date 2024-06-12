@@ -29,11 +29,15 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
     @Autowired
     ActivityMapper activityMapper;
     @Override
-    public List<ActivityVO> selectActivityList() {
+    public List<ActivityVO> selectActivityList(ActivityVO activityVO) {
         expireActivity();
-        return activityMapper.selectActivityList();
+        return activityMapper.selectActivityList(activityVO);
     }
 
+    /**
+     * 根据当前时间判断活动是否已经结束
+     * @return
+     */
     private boolean expireActivity() {
         UpdateWrapper<Activity> uw = new UpdateWrapper<>();
         uw.lambda().set(Activity::getStatus, 0).eq(Activity::getStatus, 1).lt(Activity::getEndTime, LocalDateTime.now());

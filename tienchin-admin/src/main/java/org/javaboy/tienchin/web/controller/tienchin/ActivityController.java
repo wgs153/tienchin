@@ -42,9 +42,9 @@ public class ActivityController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('tienchin:activity:list')")
     @GetMapping("/list")
-    public TableDataInfo list() {
+    public TableDataInfo list(ActivityVO activityVO) {
         startPage();
-        List<ActivityVO> list = activityService.selectActivityList();
+        List<ActivityVO> list = activityService.selectActivityList(activityVO);
         return getDataTable(list);
     }
     /**

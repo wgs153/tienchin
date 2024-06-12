@@ -16,6 +16,6 @@ import java.util.List;
  */
 public interface ActivityMapper extends BaseMapper<Activity> {
 
-    List<ActivityVO> selectActivityList();
+    List<ActivityVO> selectActivityList(ActivityVO activityVO);
 
 }

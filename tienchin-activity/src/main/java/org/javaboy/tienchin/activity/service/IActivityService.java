@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface IActivityService extends IService<Activity> {
 
-    List<ActivityVO> selectActivityList();
+    List<ActivityVO> selectActivityList(ActivityVO activityVO);
 
     AjaxResult addActivity(ActivityVO activityVO);
 

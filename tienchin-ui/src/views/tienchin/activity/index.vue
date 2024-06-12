@@ -1,32 +1,53 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="岗位编码" prop="postCode">
+      <el-form-item label="活动名称" prop="name">
         <el-input
-            v-model="queryParams.postCode"
-            placeholder="请输入岗位编码"
+            v-model="queryParams.name"
+            placeholder="请输入活动名称"
             clearable
-            @keyup.enter="handleQuery"
+            style="width: 180px"
         />
       </el-form-item>
-      <el-form-item label="岗位名称" prop="postName">
-        <el-input
-            v-model="queryParams.postName"
-            placeholder="请输入岗位名称"
-            clearable
-            @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="岗位状态" clearable>
+
+      <el-form-item label="渠道名称" prop="channelId">
+        <el-select v-model="queryParams.channelId" placeholder="请选择渠道" clearable style="width: 180px">
           <el-option
-              v-for="dict in sys_normal_disable"
+              v-for="dict in channelList"
+              :key="dict.channelId"
+              :label="dict.channelName"
+              :value="dict.channelId"
+          />
+        </el-select>
+      </el-form-item>
+
+
+      <el-form-item label="活动状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择活动状态" clearable style="width: 180px">
+          <el-option
+              v-for="dict in activity_status"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
           />
         </el-select>
       </el-form-item>
+      <el-form-item label="活动类型" prop="type" clearable>
+        <el-select
+            v-model="queryParams.type"
+            placeholder="请选择活动类型"
+            clearable
+            style="width: 180px"
+        >
+          <el-option
+              v-for="dict in activity_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
+      </el-form-item>
+
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
         <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -249,9 +270,10 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    postCode: undefined,
-    postName: undefined,
-    status: undefined
+    name: undefined,
+    channelId: undefined,
+    status: undefined,
+    type: undefined
   },
   rules: {
     channelId: [{required: true, message: "渠道来源不能为空", trigger: "blur"}],
@@ -393,8 +415,10 @@ function handleExport() {
 function handleChannelList() {
   listChannel().then(response => {
     channelList.value = response.data;
+
   });
 }
 
 getList();
+handleChannelList();
 </script>
