@@ -406,9 +406,9 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("system/post/export", {
+  proxy.download("tienchin/activity/export", {
     ...queryParams.value
-  }, `post_${new Date().getTime()}.xlsx`);
+  }, `activity_${new Date().getTime()}.xlsx`);
 }
 
 /** 查询渠道列表 */

@@ -1,9 +1,11 @@
 package org.javaboy.tienchin.web.controller.tienchin;
 
+import org.javaboy.tienchin.activity.domain.Activity;
 import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.service.IActivityService;
 import org.javaboy.tienchin.activity.validator.CreateGroup;
 import org.javaboy.tienchin.activity.validator.EditGroup;
+import org.javaboy.tienchin.channel.domain.Channel;
 import org.javaboy.tienchin.channel.domain.vo.ChannelVO;
 import org.javaboy.tienchin.channel.service.IChannelService;
 import org.javaboy.tienchin.common.annotation.Log;
@@ -11,12 +13,13 @@ import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -102,6 +105,19 @@ public class ActivityController extends BaseController {
         return toAjax(activityService.deleteActivityByIds(activityIds));
     }
 
+    /**
+     * 导出活动
+     * @param response
+     * @param activityVO
+     */
+    @Log(title = "活动管理", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('tienchin:activity:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, ActivityVO activityVO) {
+        List<ActivityVO> list = activityService.selectActivityList(activityVO);
+        ExcelUtil<ActivityVO> util = new ExcelUtil<ActivityVO>(ActivityVO.class);
+        util.exportExcel(response, list, "活动数据");
+    }
 
 
 }
