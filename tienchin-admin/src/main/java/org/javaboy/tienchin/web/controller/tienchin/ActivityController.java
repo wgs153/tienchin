@@ -1,11 +1,9 @@
 package org.javaboy.tienchin.web.controller.tienchin;
 
-import org.javaboy.tienchin.activity.domain.Activity;
 import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.service.IActivityService;
 import org.javaboy.tienchin.activity.validator.CreateGroup;
 import org.javaboy.tienchin.activity.validator.EditGroup;
-import org.javaboy.tienchin.channel.domain.Channel;
 import org.javaboy.tienchin.channel.domain.vo.ChannelVO;
 import org.javaboy.tienchin.channel.service.IChannelService;
 import org.javaboy.tienchin.common.annotation.Log;
