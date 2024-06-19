@@ -3,6 +3,8 @@ package org.javaboy.tienchin.course.service;
 import org.javaboy.tienchin.course.domain.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * <p>
  * 课程 服务类
@@ -13,4 +15,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICourseService extends IService<Course> {
 
+    List<Course> selectCourseList();
 }
