@@ -61,7 +61,7 @@
             plain
             icon="Plus"
             @click="handleAdd"
-            v-hasPermi="['tienchin:activity:create']"
+            v-hasPermi="['tienchin:course:create']"
         >新增
         </el-button>
       </el-col>
@@ -155,7 +155,7 @@
 
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" v-model="open" width="500px" append-to-body>
-      <el-form ref="activityRef" :model="form" :rules="rules" label-width="80px">
+      <el-form ref="courseRef" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
             <el-form-item label="渠道来源" prop="channelId">
@@ -298,16 +298,15 @@ function cancel() {
 /** 表单重置 */
 function reset() {
   form.value = {
-    channelId: undefined,
-    name: undefined,
-    activityTime: undefined,
-    info: undefined,
+    courseId: undefined,
     type: undefined,
-    discount: undefined,
-    voucher: undefined,
+    name: undefined,
+    price: undefined,
+    info: undefined,
+    applyTo: undefined,
     remark: undefined
   };
-  proxy.resetForm("activityRef");
+  proxy.resetForm("courseRef");
 }
 
 /** 搜索按钮操作 */
@@ -332,10 +331,10 @@ function handleSelectionChange(selection) {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
-  // 加载渠道列表
-  handleChannelList();
+  // 加载课程
+  // handleCourseList();
   open.value = true;
-  title.value = "添加活动";
+  title.value = "添加课程";
 }
 
 /** 修改按钮操作 */
@@ -356,7 +355,7 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["activityRef"].validate(valid => {
+  proxy.$refs["courseRef"].validate(valid => {
     if (valid) {
       if (form.value.activityId != undefined) {
         form.value.beginTime = form.value.activityTime[0];
