@@ -25,10 +25,10 @@ export function getPost(activityId) {
   })
 }
 
-// 新增活动
-export function addActivity(data) {
+// 新增课程
+export function addCourse(data) {
   return request({
-    url: '/tienchin/activity',
+    url: '/tienchin/course',
     method: 'post',
     data: data
   })
