@@ -34,7 +34,7 @@ export function addCourse(data) {
   })
 }
 
-// 修改活动
+// 修改课程
 export function updateCourse(data) {
   return request({
     url: '/tienchin/course',

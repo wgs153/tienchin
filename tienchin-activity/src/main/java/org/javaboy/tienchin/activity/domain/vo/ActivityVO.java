@@ -1,6 +1,7 @@
 package org.javaboy.tienchin.activity.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.javaboy.tienchin.common.validator.CreateGroup;
 import org.javaboy.tienchin.common.validator.EditGroup;
 import org.javaboy.tienchin.common.annotation.Excel;
@@ -17,7 +18,7 @@ import java.time.LocalDateTime;
  * @author javaboy
  * @since 2024-06-01
  */
-
+@Data
 public class ActivityVO extends BaseEntity {
 
     /**
@@ -112,125 +113,4 @@ public class ActivityVO extends BaseEntity {
      */
     private Integer delFlag;
 
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
-    }
-
-    public String getChannelName() {
-        return channelName;
-    }
-
-    public void setChannelName(String channelName) {
-        this.channelName = channelName;
-    }
-
-    public String getInfo() {
-        return info;
-    }
-
-    public void setInfo(String info) {
-        this.info = info;
-    }
-
-    public Integer getType() {
-        return type;
-    }
-
-    public void setType(Integer type) {
-        this.type = type;
-    }
-
-    public Double getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Double discount) {
-        this.discount = discount;
-    }
-
-    public Double getVoucher() {
-        return voucher;
-    }
-
-    public void setVoucher(Double voucher) {
-        this.voucher = voucher;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getBeginTime() {
-        return beginTime;
-    }
-
-    public void setBeginTime(LocalDateTime beginTime) {
-        this.beginTime = beginTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return "ActivityVO{" +
-                "activityId=" + activityId +
-                ", name='" + name + '\'' +
-                ", channelId=" + channelId +
-                ", channelName=" + channelName +
-                ", info='" + info + '\'' +
-                ", type=" + type +
-                ", discount=" + discount +
-                ", voucher=" + voucher +
-                ", status=" + status +
-                ", beginTime=" + beginTime +
-                ", endTime=" + endTime +
-                ", remark=" + remark +
-                ", delFlag=" + delFlag +
-                '}';
-    }
 }
