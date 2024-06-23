@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/tienchin/course")
 public class CourseController extends BaseController {
-
+//用来测试
     @Autowired
     ICourseService courseService;
 
