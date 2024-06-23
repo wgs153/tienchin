@@ -83,7 +83,7 @@
             icon="Delete"
             :disabled="multiple"
             @click="handleDelete"
-            v-hasPermi="['tienchin:activity:remove']"
+            v-hasPermi="['tienchin:course:remove']"
         >删除
         </el-button>
       </el-col>
@@ -138,7 +138,7 @@
               type="text"
               icon="Delete"
               @click="handleDelete(scope.row)"
-              v-hasPermi="['tienchin:activity:remove']"
+              v-hasPermi="['tienchin:course:remove']"
           >删除
           </el-button>
         </template>
@@ -214,8 +214,8 @@
 </template>
 
 <script setup name="Post">
-import {listChannel, delActivity} from "@/api/tienchin/activity";
-import {listCourse, addCourse,getPost,updateCourse} from "@/api/tienchin/course";
+import {listChannel} from "@/api/tienchin/activity";
+import {listCourse, addCourse,getPost,updateCourse,delCourse} from "@/api/tienchin/course";
 import {parseTime} from "../../../utils/ruoyi";
 
 const {proxy} = getCurrentInstance();
@@ -356,9 +356,9 @@ function submitForm() {
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const activityIds = row.activityId || ids.value;
-  proxy.$modal.confirm('是否确认删除活动编号为"' + activityIds + '"的数据项？').then(function () {
-    return delActivity(activityIds);
+  const courseIds = row.courseId || ids.value;
+  proxy.$modal.confirm('是否确认删除课程Id为"' + courseIds + '"的数据项？').then(function () {
+    return delCourse(courseIds);
   }).then(() => {
     getList();
     proxy.$modal.msgSuccess("删除成功");

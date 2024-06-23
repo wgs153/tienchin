@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.javaboy.tienchin.course.domain.Course;
@@ -65,6 +67,13 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         LambdaQueryWrapper<Course> lqw = qw.lambda().eq(Course::getCourseId, courseId).eq(Course::getDelFlag, 0);
         Course course = getOne(lqw);
         return  course!=null ? AjaxResult.success(course) : AjaxResult.error("查询结果为空");
+    }
+
+    @Override
+    public boolean deleteCourseById(Long[] courseIds) {
+        LambdaUpdateWrapper<Course> luw = new UpdateWrapper<Course>().lambda();
+        luw.in(Course::getCourseId,courseIds).set(Course::getDelFlag,1);
+        return update(luw);
     }
 
 }

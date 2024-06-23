@@ -43,10 +43,10 @@ export function updateCourse(data) {
   })
 }
 
-// 删除岗位
-export function delActivity(activityIds) {
+// 删除课程
+export function delCourse(courseIds) {
   return request({
-    url: '/tienchin/activity/' + activityIds,
+    url: '/tienchin/course/' + courseIds,
     method: 'delete'
   })
 }

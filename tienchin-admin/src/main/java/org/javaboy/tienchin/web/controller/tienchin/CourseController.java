@@ -1,5 +1,6 @@
 package org.javaboy.tienchin.web.controller.tienchin;
 
+import org.apache.ibatis.annotations.Delete;
 import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
@@ -73,6 +74,13 @@ public class CourseController extends BaseController {
     @GetMapping("/{courseId}")
     public AjaxResult getCourseById(@PathVariable Long courseId){
         return courseService.getCourseById(courseId);
+    }
+
+    @PreAuthorize("@ss.hasPermi('tienchin:course:remove')")
+    @Log(title = "课程管理", businessType = BusinessType.DELETE)
+    @DeleteMapping("/{courseIds}")
+    public boolean deleteCourse(@PathVariable Long[] courseIds){
+        return courseService.deleteCourseById(courseIds);
     }
 
 }
