@@ -20,4 +20,7 @@ public interface ICourseService extends IService<Course> {
 
     AjaxResult addCourse(Course course);
 
+    AjaxResult updateCourse(Course course);
+
+    AjaxResult getCourseById(Long courseId);
 }

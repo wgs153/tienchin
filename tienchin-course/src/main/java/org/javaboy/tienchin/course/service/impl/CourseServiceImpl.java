@@ -1,5 +1,7 @@
 package org.javaboy.tienchin.course.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.AbstractWrapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
@@ -48,6 +50,21 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
         }
         course.setCreateBy(SecurityUtils.getUsername());
         return save(course) ? AjaxResult.success("添加成功") : AjaxResult.error("添加失败");
+    }
+
+    @Override
+    public AjaxResult updateCourse(Course course) {
+        course.setUpdateBy(SecurityUtils.getUsername());
+
+        return updateById(course) ? AjaxResult.success("修改成功") : AjaxResult.error("修改失败");
+    }
+
+    @Override
+    public AjaxResult getCourseById(Long courseId) {
+        QueryWrapper<Course> qw = new QueryWrapper<>();
+        LambdaQueryWrapper<Course> lqw = qw.lambda().eq(Course::getCourseId, courseId).eq(Course::getDelFlag, 0);
+        Course course = getOne(lqw);
+        return  course!=null ? AjaxResult.success(course) : AjaxResult.error("查询结果为空");
     }
 
 }

@@ -1,4 +1,4 @@
-package org.javaboy.tienchin.activity.validator;
+package org.javaboy.tienchin.common.validator;
 
 /**
  * @Author eqe

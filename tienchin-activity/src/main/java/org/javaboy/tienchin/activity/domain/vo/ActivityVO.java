@@ -1,8 +1,8 @@
 package org.javaboy.tienchin.activity.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.javaboy.tienchin.activity.validator.CreateGroup;
-import org.javaboy.tienchin.activity.validator.EditGroup;
+import org.javaboy.tienchin.common.validator.CreateGroup;
+import org.javaboy.tienchin.common.validator.EditGroup;
 import org.javaboy.tienchin.common.annotation.Excel;
 import org.javaboy.tienchin.common.core.domain.BaseEntity;
 

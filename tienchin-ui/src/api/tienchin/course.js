@@ -17,10 +17,10 @@ export function listChannel(){
 }
 
 
-// 查询活动详细
-export function getPost(activityId) {
+// 查询课程详细
+export function getPost(courseId) {
   return request({
-    url: '/tienchin/activity/' + activityId,
+    url: '/tienchin/course/' + courseId,
     method: 'get'
   })
 }
@@ -35,9 +35,9 @@ export function addCourse(data) {
 }
 
 // 修改活动
-export function updateActivity(data) {
+export function updateCourse(data) {
   return request({
-    url: '/tienchin/activity',
+    url: '/tienchin/course',
     method: 'put',
     data: data
   })

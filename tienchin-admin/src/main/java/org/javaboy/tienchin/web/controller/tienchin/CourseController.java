@@ -5,6 +5,8 @@ import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.validator.CreateGroup;
+import org.javaboy.tienchin.common.validator.EditGroup;
 import org.javaboy.tienchin.course.domain.Course;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,14 +40,39 @@ public class CourseController extends BaseController {
         return getDataTable(list);
     }
 
+    /**
+     * 新增课程
+     * @param course
+     * @return
+     */
     @PreAuthorize("@ss.hasPermi('tienchin:course:create')")
     @Log(title = "课程管理", businessType = BusinessType.INSERT)
     @PostMapping()
-    public AjaxResult addCourse(@Validated @RequestBody Course course){
-
-
+    public AjaxResult addCourse(@Validated({CreateGroup.class}) @RequestBody Course course){
         return courseService.addCourse(course);
     }
 
+    /**
+     * 修改课程
+     * @param course
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('tienchin:course:edit')")
+    @Log(title = "课程管理", businessType = BusinessType.UPDATE)
+    @PutMapping
+    public AjaxResult updateCourse(@Validated({EditGroup.class}) @RequestBody Course course){
+        return courseService.updateCourse(course);
+    }
+
+    /**
+     * 修改时，查询课程信息
+     * @param courseId
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('tienchin:course:edit')")
+    @GetMapping("/{courseId}")
+    public AjaxResult getCourseById(@PathVariable Long courseId){
+        return courseService.getCourseById(courseId);
+    }
 
 }
