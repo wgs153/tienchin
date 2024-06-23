@@ -1,14 +1,11 @@
 package org.javaboy.tienchin.web.controller.tienchin;
 
-import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
-import org.javaboy.tienchin.activity.validator.CreateGroup;
 import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
 import org.javaboy.tienchin.course.domain.Course;
-import org.junit.jupiter.params.shadow.com.univocity.parsers.annotations.Validate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
