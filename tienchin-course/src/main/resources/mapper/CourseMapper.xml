@@ -4,6 +4,22 @@
 
     <select id="selectCourseList" resultType="org.javaboy.tienchin.course.domain.Course">
     select * from tienchin_course where del_flag = 0
+        <if test="name !=null">
+            and name like concat('%',#{name},'%')
+        </if>
+        <if test="type !=null">
+            and type = #{type}
+        </if>
+        <if test="applyTo !=null">
+            and apply_to = #{applyTo}
+        </if>
+
+        <if test="minPrice !=null" >
+            and price >= #{minPrice}
+        </if>
+        <if test="maxPrice !=null">
+            and price &lt;= #{maxPrice}
+        </if>
 
     </select>
 </mapper>

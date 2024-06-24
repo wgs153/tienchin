@@ -1,19 +1,24 @@
 package org.javaboy.tienchin.web.controller.tienchin;
 
 import org.apache.ibatis.annotations.Delete;
+import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.common.annotation.Log;
 import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.common.utils.poi.ExcelUtil;
 import org.javaboy.tienchin.common.validator.CreateGroup;
 import org.javaboy.tienchin.common.validator.EditGroup;
 import org.javaboy.tienchin.course.domain.Course;
+import org.javaboy.tienchin.course.domain.vo.CourseVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.javaboy.tienchin.course.service.ICourseService;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -35,9 +40,9 @@ public class CourseController extends BaseController {
      */
     @PreAuthorize("@ss.hasPermi('tienchin:course:list')")
     @GetMapping("/list")
-    public TableDataInfo list() {
+    public TableDataInfo list(CourseVO courseVO) {
         startPage();
-        List<Course> list = courseService.selectCourseList();
+        List<Course> list = courseService.selectCourseList(courseVO);
         return getDataTable(list);
     }
 
@@ -76,11 +81,30 @@ public class CourseController extends BaseController {
         return courseService.getCourseById(courseId);
     }
 
+    /**
+     * 删除课程
+     * @param courseIds
+     * @return
+     */
     @PreAuthorize("@ss.hasPermi('tienchin:course:remove')")
     @Log(title = "课程管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{courseIds}")
     public boolean deleteCourse(@PathVariable Long[] courseIds){
         return courseService.deleteCourseById(courseIds);
     }
+    /**
+     * 导出课程
+     * @param response
+     * @param courseVO
+     */
+    @Log(title = "课程管理", businessType = BusinessType.EXPORT)
+    @PreAuthorize("@ss.hasPermi('tienchin:course:export')")
+    @PostMapping("/export")
+    public void export(HttpServletResponse response, CourseVO courseVO) {
+        List<Course> list = courseService.selectCourseList(courseVO);
+        ExcelUtil<Course> util = new ExcelUtil<Course>(Course.class);
+        util.exportExcel(response, list, "课程数据");
+    }
+
 
 }

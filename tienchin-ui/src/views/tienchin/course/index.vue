@@ -1,51 +1,41 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="活动名称" prop="name">
+      <el-form-item label="课程名称" prop="name">
         <el-input
             v-model="queryParams.name"
-            placeholder="请输入活动名称"
+            placeholder="请输入课程名称"
             clearable
             style="width: 180px"
         />
       </el-form-item>
 
-      <el-form-item label="渠道名称" prop="channelId">
-        <el-select v-model="queryParams.channelId" placeholder="请选择渠道" clearable style="width: 180px">
+      <el-form-item label="课程类型" prop="channelId">
+        <el-select v-model="queryParams.type" placeholder="请选择课程类型" clearable style="width: 150px">
           <el-option
-              v-for="dict in channelList"
-              :key="dict.channelId"
-              :label="dict.channelName"
-              :value="dict.channelId"
-          />
-        </el-select>
-      </el-form-item>
-
-
-      <el-form-item label="活动状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择活动状态" clearable style="width: 180px">
-          <el-option
-              v-for="dict in activity_status"
+              v-for="dict in course_type"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="活动类型" prop="type" clearable>
-        <el-select
-            v-model="queryParams.type"
-            placeholder="请选择活动类型"
-            clearable
-            style="width: 180px"
-        >
+
+      <el-form-item label="适用人群" prop="applyTo">
+        <el-select v-model="queryParams.applyTo" placeholder="请选择适用人群" clearable style="width: 150px">
           <el-option
-              v-for="dict in activity_type"
+              v-for="dict in course_apply_to"
               :key="dict.value"
               :label="dict.label"
               :value="dict.value"
           />
         </el-select>
+      </el-form-item>
+      <el-form-item label="最低价格" prop="minPrice">
+        <el-input-number placeholder="最低价格" v-model="queryParams.minPrice" :precision="1" :step="100" :mix="100"></el-input-number>
+      </el-form-item>
+      <el-form-item label="最高价格" prop="maxPrice" clearable>
+        <el-input-number placeholder="最高价格" v-model="queryParams.maxPrice" :precision="1" :step="100" :max="10000"></el-input-number>
       </el-form-item>
 
       <el-form-item>
@@ -93,7 +83,7 @@
             plain
             icon="Download"
             @click="handleExport"
-            v-hasPermi="['tienchin:activity:export']"
+            v-hasPermi="['tienchin:course:export']"
         >导出
         </el-button>
       </el-col>
@@ -214,12 +204,10 @@
 </template>
 
 <script setup name="Post">
-import {listChannel} from "@/api/tienchin/activity";
 import {listCourse, addCourse,getPost,updateCourse,delCourse} from "@/api/tienchin/course";
 import {parseTime} from "../../../utils/ruoyi";
 
 const {proxy} = getCurrentInstance();
-// const {activity_type, activity_status} = proxy.useDict("activity_type", "activity_status");
 const {course_apply_to, course_type} = proxy.useDict("course_apply_to", "course_type");
 
 const courseList = ref([]);
@@ -231,17 +219,18 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
-const channelList = ref([]);
 
 const data = reactive({
   form: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
+    courseId:undefined,
     name: undefined,
-    channelId: undefined,
-    status: undefined,
-    type: undefined
+    type: undefined,
+    applyTo: undefined,
+    minPrice: undefined,
+    maxPrice: undefined
   },
   rules: {
     name: [{required: true, message: "课程名称不能为空", trigger: "blur"}],
@@ -368,19 +357,10 @@ function handleDelete(row) {
 
 /** 导出按钮操作 */
 function handleExport() {
-  proxy.download("tienchin/activity/export", {
+  proxy.download("tienchin/course/export", {
     ...queryParams.value
-  }, `activity_${new Date().getTime()}.xlsx`);
-}
-
-/** 查询渠道列表 */
-function handleChannelList() {
-  listChannel().then(response => {
-    channelList.value = response.data;
-
-  });
+  }, `course_${new Date().getTime()}.xlsx`);
 }
 
 getList();
-handleChannelList();
 </script>

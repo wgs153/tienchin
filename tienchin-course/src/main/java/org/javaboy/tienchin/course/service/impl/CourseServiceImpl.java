@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.utils.SecurityUtils;
 import org.javaboy.tienchin.course.domain.Course;
+import org.javaboy.tienchin.course.domain.vo.CourseVO;
 import org.javaboy.tienchin.course.mapper.CourseMapper;
 import org.javaboy.tienchin.course.service.ICourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -36,8 +37,8 @@ public class CourseServiceImpl extends ServiceImpl<CourseMapper, Course> impleme
     CourseMapper courseMapper;
 
     @Override
-    public List<Course> selectCourseList() {
-        return courseMapper.selectCourseList();
+    public List<Course> selectCourseList(CourseVO courseVO) {
+        return courseMapper.selectCourseList(courseVO);
     }
 
     @Override

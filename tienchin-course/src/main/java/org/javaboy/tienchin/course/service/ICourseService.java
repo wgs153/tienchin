@@ -3,6 +3,7 @@ package org.javaboy.tienchin.course.service;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.course.domain.Course;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.javaboy.tienchin.course.domain.vo.CourseVO;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
  */
 public interface ICourseService extends IService<Course> {
 
-    List<Course> selectCourseList();
+    List<Course> selectCourseList(CourseVO courseVO);
 
     AjaxResult addCourse(Course course);
 

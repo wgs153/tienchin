@@ -8,13 +8,6 @@ export function listCourse(query) {
     params: query
   })
 }
-// 查询渠道列表
-export function listChannel(){
-  return request({
-    url: '/tienchin/activity/channel/list',
-    method: 'get'
-  })
-}
 
 
 // 查询课程详细
