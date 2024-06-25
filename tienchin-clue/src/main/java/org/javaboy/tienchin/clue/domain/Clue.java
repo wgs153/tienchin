@@ -3,6 +3,9 @@ package org.javaboy.tienchin.clue.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
  * @author javaboy
  * @since 2024-06-24
  */
+@Data
 @TableName("tienchin_clue")
 public class Clue implements Serializable {
 
@@ -25,6 +29,7 @@ public class Clue implements Serializable {
     /**
      * 客户名
      */
+    @NotBlank(message = "{clue.name.NotBlank}")
     private String name;
 
     /**
@@ -60,6 +65,7 @@ public class Clue implements Serializable {
     /**
      * 客户电话
      */
+    @NotBlank(message = "{clue.phone.NotBlank}")
     private String phone;
 
     /**
@@ -110,212 +116,4 @@ public class Clue implements Serializable {
 
     private String updateBy;
 
-    /**
-     * 删除：0存在，1删除
-     */
-    private Integer delFlag;
-
-    public Integer getClueId() {
-        return clueId;
-    }
-
-    public void setClueId(Integer clueId) {
-        this.clueId = clueId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Integer getChannelId() {
-        return channelId;
-    }
-
-    public void setChannelId(Integer channelId) {
-        this.channelId = channelId;
-    }
-
-    public Integer getActivityId() {
-        return activityId;
-    }
-
-    public void setActivityId(Integer activityId) {
-        this.activityId = activityId;
-    }
-
-    public Integer getGender() {
-        return gender;
-    }
-
-    public void setGender(Integer gender) {
-        this.gender = gender;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public String getWeixin() {
-        return weixin;
-    }
-
-    public void setWeixin(String weixin) {
-        this.weixin = weixin;
-    }
-
-    public String getQq() {
-        return qq;
-    }
-
-    public void setQq(String qq) {
-        this.qq = qq;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public Integer getLevel() {
-        return level;
-    }
-
-    public void setLevel(Integer level) {
-        this.level = level;
-    }
-
-    public Integer getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Integer subject) {
-        this.subject = subject;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public Integer getFallCount() {
-        return fallCount;
-    }
-
-    public void setFallCount(Integer fallCount) {
-        this.fallCount = fallCount;
-    }
-
-    public LocalDateTime getNextTime() {
-        return nextTime;
-    }
-
-    public void setNextTime(LocalDateTime nextTime) {
-        this.nextTime = nextTime;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public Byte getTransfer() {
-        return transfer;
-    }
-
-    public void setTransfer(Byte transfer) {
-        this.transfer = transfer;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public LocalDateTime getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(LocalDateTime updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Integer getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(Integer delFlag) {
-        this.delFlag = delFlag;
-    }
-
-    @Override
-    public String toString() {
-        return "Clue{" +
-            "clueId = " + clueId +
-            ", name = " + name +
-            ", channelId = " + channelId +
-            ", activityId = " + activityId +
-            ", gender = " + gender +
-            ", age = " + age +
-            ", weixin = " + weixin +
-            ", qq = " + qq +
-            ", phone = " + phone +
-            ", level = " + level +
-            ", subject = " + subject +
-            ", status = " + status +
-            ", fallCount = " + fallCount +
-            ", nextTime = " + nextTime +
-            ", endTime = " + endTime +
-            ", transfer = " + transfer +
-            ", remark = " + remark +
-            ", createTime = " + createTime +
-            ", createBy = " + createBy +
-            ", updateTime = " + updateTime +
-            ", updateBy = " + updateBy +
-            ", delFlag = " + delFlag +
-        "}";
-    }
 }
