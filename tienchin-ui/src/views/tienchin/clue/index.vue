@@ -161,12 +161,13 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="渠道来源" prop="channelId">
-              <el-select v-model="form.channelId" placeholder="请选择渠道来源" style="width: 100%">
+              <el-select v-model="form.channelId" @change="channelChange" placeholder="请选择渠道来源" style="width: 100%">
                 <el-option
-                    v-for="dice in course_apply_to"
-                    :key="dice.value"
-                    :value="parseInt(dice.value)"
-                    :label="dice.label">
+                    v-for="channel in channelList"
+                    :key="channel.channelId"
+                    :value="channel.channelId"
+                    :label="channel.channelName">
+
                 </el-option>
               </el-select>
             </el-form-item>
@@ -175,10 +176,10 @@
             <el-form-item label="活动信息" prop="activityId">
               <el-select v-model="form.activityId" placeholder="请选择活动信息" style="width: 100%">
                 <el-option
-                    v-for="dict in course_type"
-                    :label="dict.label"
-                    :value="parseInt(dict.value)"
-                    :key="dict.value">
+                    v-for="activity in activityList"
+                    :label="activity.name"
+                    :value="activity.activityId"
+                    :key="activity.activityId">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -233,6 +234,7 @@
 
 <script setup name="Post">
 import {listCourse, addCourse,getPost,updateCourse,delCourse} from "@/api/tienchin/course";
+import {listActivityByChannelId, listChannels} from "@/api/tienchin/clue";
 import {parseTime} from "../../../utils/ruoyi";
 
 const {proxy} = getCurrentInstance();
@@ -240,6 +242,8 @@ const {course_apply_to, course_type} = proxy.useDict("course_apply_to", "course_
 const {sys_user_sex} = proxy.useDict("sys_user_sex");
 
 const courseList = ref([]);
+const channelList = ref([]);
+const activityList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -324,6 +328,7 @@ function handleAdd() {
   reset();
   open.value = true;
   title.value = "添加线索";
+  handleChannels();
 }
 
 /** 修改按钮操作 */
@@ -376,6 +381,20 @@ function handleExport() {
     ...queryParams.value
   }, `course_${new Date().getTime()}.xlsx`);
 }
+/** 加载渠道列表 */
+function handleChannels() {
+  listChannels().then(response =>{
+    channelList.value = response.data;
+  });
+}
+/** 根据渠道id查询活动列表 */
+function channelChange(channelId){
+  form.value.activityId=undefined;
+  listActivityByChannelId(channelId).then(response =>{
+    activityList.value=response.data;
+  })
+}
+
 
 getList();
 </script>

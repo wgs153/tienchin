@@ -1,5 +1,7 @@
 package org.javaboy.tienchin.activity.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.javaboy.tienchin.activity.domain.Activity;
 import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
@@ -12,6 +14,7 @@ import org.javaboy.tienchin.common.utils.bean.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.channels.Channel;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -75,4 +78,12 @@ public class ActivityServiceImpl extends ServiceImpl<ActivityMapper, Activity> i
         uw.lambda().set(Activity::getDelFlag,1).in(Activity::getActivityId, activityIds);
         return update(uw);
     }
+
+    @Override
+    public AjaxResult getActivityByChannelId(Integer channelId) {
+        LambdaQueryWrapper<Activity> lqw = new QueryWrapper<Activity>().lambda();
+        lqw.eq(Activity::getChannelId, channelId);
+        return AjaxResult.success(list(lqw));
+    }
+
 }
