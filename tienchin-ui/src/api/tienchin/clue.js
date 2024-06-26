@@ -15,7 +15,14 @@ export function listActivityByChannelId(channelId) {
     method: 'get'
   })
 }
-
+// 新增线索
+export function addClue(data) {
+  return request({
+    url: '/tienchin/clue',
+    method: 'post',
+    data: data
+  })
+}
 
 // 查询课程详细
 export function getPost(courseId) {

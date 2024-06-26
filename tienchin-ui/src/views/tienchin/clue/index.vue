@@ -216,9 +216,6 @@
           </el-col>
         </el-row>
 
-
-
-
       </el-form>
 
       <template #footer>
@@ -234,7 +231,7 @@
 
 <script setup name="Post">
 import {listCourse, addCourse,getPost,updateCourse,delCourse} from "@/api/tienchin/course";
-import {listActivityByChannelId, listChannels} from "@/api/tienchin/clue";
+import {addClue, listActivityByChannelId, listChannels} from "@/api/tienchin/clue";
 import {parseTime} from "../../../utils/ruoyi";
 
 const {proxy} = getCurrentInstance();
@@ -353,7 +350,7 @@ function submitForm() {
           getList();
         });
       } else {
-        addCourse(form.value).then(response => {
+        addClue(form.value).then(response => {
           proxy.$modal.msgSuccess("新增成功");
           open.value = false;
           getList();
