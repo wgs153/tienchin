@@ -38,6 +38,11 @@ public class ClueController {
     IActivityService activityService;
 
 
+    /**
+     * 添加线索
+     * @param clue
+     * @return
+     */
     @PreAuthorize("@ss.hasPermi('tienchin:clue:create')")
     @Log(title = "线索管理", businessType = BusinessType.INSERT)
     @PostMapping()

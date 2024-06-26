@@ -36,12 +36,13 @@ public class Assignment implements Serializable {
     /**
      * 线索或商机的ID
      */
+//    private Integer assignId;
     private Integer assignId;
 
     /**
      * 所属用户的id
      */
-    private Integer userId;
+    private Long userId;
 
     /**
      * 所属的用户名
@@ -51,7 +52,7 @@ public class Assignment implements Serializable {
     /**
      * 所属部门ID
      */
-    private Integer deptId;
+    private Long deptId;
 
     /**
      * 是否是当前最新分配人
