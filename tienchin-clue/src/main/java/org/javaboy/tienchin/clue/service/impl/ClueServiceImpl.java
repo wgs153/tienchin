@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  * 线索表 服务实现类
@@ -52,6 +54,8 @@ public class ClueServiceImpl extends ServiceImpl<ClueMapper, Clue> implements IC
             assignment.setCreateBy(SecurityUtils.getUsername());
             assignment.setUserId(SecurityUtils.getUserId());
             assignment.setDeptId(SecurityUtils.getDeptId());
+            assignment.setCreateTime(LocalDateTime.now());
+            assignment.setCreateBy(SecurityUtils.getUsername());
             assignmentService.save(assignment);
             return AjaxResult.success("线索录入成功");
         }catch (Exception e){
