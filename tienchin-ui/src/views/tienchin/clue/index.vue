@@ -32,10 +32,12 @@
         </el-select>
       </el-form-item>
       <el-form-item label="最低价格" prop="minPrice">
-        <el-input-number placeholder="最低价格" v-model="queryParams.minPrice" :precision="1" :step="100" :mix="100"></el-input-number>
+        <el-input-number placeholder="最低价格" v-model="queryParams.minPrice" :precision="1" :step="100"
+                         :mix="100"></el-input-number>
       </el-form-item>
       <el-form-item label="最高价格" prop="maxPrice" clearable>
-        <el-input-number placeholder="最高价格" v-model="queryParams.maxPrice" :precision="1" :step="100" :max="10000"></el-input-number>
+        <el-input-number placeholder="最高价格" v-model="queryParams.maxPrice" :precision="1" :step="100"
+                         :max="10000"></el-input-number>
       </el-form-item>
 
       <el-form-item>
@@ -90,30 +92,29 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="courseList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="clueList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="50" align="center"/>
-      <el-table-column label="线索编号" align="center" prop="courseId" width="80"/>
-      <el-table-column label="线索类型" align="type" width="80">
-        <template #default="scope">
-          <dict-tag :options="course_type" :value="scope.row.type"/>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="线索名称" align="center" prop="name" width="80"/>
-      <el-table-column label="线索价格" align="center" prop="price" width="80"/>
-      <el-table-column label="线索简介" :show-overflow-tooltip="true" align="center" prop="info" width="200"/>
-      <el-table-column label="适用人群" align="center" width="80">
-        <template #default="scope">
-          <dict-tag :options="course_apply_to" :value="scope.row.applyTo"/>
-        </template>
-      </el-table-column>
-      <el-table-column label="备注信息" :show-overflow-tooltip="true" align="center" prop="remark" width="200"/>
+      <el-table-column label="线索编号" align="center" :show-overflow-tooltip="true" width="80" prop="clueId"/>
+      <el-table-column label="客戶姓名" align="center" :show-overflow-tooltip="true" width="120" prop="name"/>
+      <el-table-column label="手机号码" align="center" :show-overflow-tooltip="true" width="120" prop="phone"/>
+      <el-table-column label="渠道来源" align="center" :show-overflow-tooltip="true" width="120" prop="channelName"/>
       <el-table-column label="创建时间" align="center" prop="createTime" width="180">
         <template #default="scope">
           <span>{{ parseTime(scope.row.createTime) }}</span>
         </template>
       </el-table-column>
-
+      <el-table-column label="线索归属" align="center" :show-overflow-tooltip="true" width="120" prop="owner"/>
+      <el-table-column label="线索状态" align="center" width="120" prop="status">
+        <template #default="scope">
+<!--     options的值是对应的插件里设置的字段，   :value是接口返回的字段  -->
+          <dict-tag :options="clue_status" :value="scope.row.status"/>
+        </template>
+      </el-table-column>
+      <el-table-column label="下次跟进时间" align="center" width="180" prop="nextTime">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.nextTime) }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template #default="scope">
@@ -161,7 +162,8 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="渠道来源" prop="channelId">
-              <el-select v-model="form.channelId" @change="channelChange" placeholder="请选择渠道来源" style="width: 100%">
+              <el-select v-model="form.channelId" @change="channelChange" placeholder="请选择渠道来源"
+                         style="width: 100%">
                 <el-option
                     v-for="channel in channelList"
                     :key="channel.channelId"
@@ -206,12 +208,12 @@
         <el-row>
           <el-col :span="12">
             <el-form-item label="微信号码" prop="weixin">
-              <el-input  v-model="form.weixin" placeholder="请输入微信号码"></el-input>
+              <el-input v-model="form.weixin" placeholder="请输入微信号码"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="QQ号码" prop="qq">
-              <el-input  v-model="form.qq" placeholder="请输入QQ号码"></el-input>
+              <el-input v-model="form.qq" placeholder="请输入QQ号码"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -230,15 +232,15 @@
 </template>
 
 <script setup name="Post">
-import {listCourse, addCourse,getPost,updateCourse,delCourse} from "@/api/tienchin/course";
-import {addClue, listActivityByChannelId, listChannels} from "@/api/tienchin/clue";
+import {listCourse, addCourse, getPost, updateCourse, delCourse} from "@/api/tienchin/course";
+import {addClue, listActivityByChannelId, listChannels,listClue} from "@/api/tienchin/clue";
 import {parseTime} from "../../../utils/ruoyi";
 
 const {proxy} = getCurrentInstance();
-const {course_apply_to, course_type} = proxy.useDict("course_apply_to", "course_type");
+const {course_apply_to, course_type,clue_status} = proxy.useDict("course_apply_to", "course_type","clue_status");
 const {sys_user_sex} = proxy.useDict("sys_user_sex");
 
-const courseList = ref([]);
+const clueList = ref([]);
 const channelList = ref([]);
 const activityList = ref([]);
 const open = ref(false);
@@ -255,7 +257,7 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    courseId:undefined,
+    courseId: undefined,
     name: undefined,
     type: undefined,
     applyTo: undefined,
@@ -273,8 +275,8 @@ const {queryParams, form, rules} = toRefs(data);
 /** 查询线索列表 */
 function getList() {
   loading.value = true;
-  listCourse(queryParams.value).then(response => {
-    courseList.value = response.rows;
+  listClue(queryParams.value).then(response => {
+    clueList.value = response.rows;
     total.value = response.total;
     loading.value = false;
   });
@@ -345,7 +347,7 @@ function submitForm() {
     if (valid) {
       if (form.value.courseId != undefined) {
         updateCourse(form.value).then(response => {
-          response.code !== 200?proxy.$modal.msgError("修改失败"):proxy.$modal.msgSuccess("修改成功");
+          response.code !== 200 ? proxy.$modal.msgError("修改失败") : proxy.$modal.msgSuccess("修改成功");
           open.value = false;
           getList();
         });
@@ -378,17 +380,19 @@ function handleExport() {
     ...queryParams.value
   }, `course_${new Date().getTime()}.xlsx`);
 }
+
 /** 加载渠道列表 */
 function handleChannels() {
-  listChannels().then(response =>{
+  listChannels().then(response => {
     channelList.value = response.data;
   });
 }
+
 /** 根据渠道id查询活动列表 */
-function channelChange(channelId){
-  form.value.activityId=undefined;
-  listActivityByChannelId(channelId).then(response =>{
-    activityList.value=response.data;
+function channelChange(channelId) {
+  form.value.activityId = undefined;
+  listActivityByChannelId(channelId).then(response => {
+    activityList.value = response.data;
   })
 }
 

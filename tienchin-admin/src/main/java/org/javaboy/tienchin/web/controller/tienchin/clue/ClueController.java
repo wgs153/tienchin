@@ -1,13 +1,17 @@
 package org.javaboy.tienchin.web.controller.tienchin.clue;
 
+import org.javaboy.tienchin.activity.domain.vo.ActivityVO;
 import org.javaboy.tienchin.activity.service.IActivityService;
 import org.javaboy.tienchin.channel.domain.Channel;
 import org.javaboy.tienchin.channel.domain.vo.ChannelVO;
 import org.javaboy.tienchin.channel.service.IChannelService;
 import org.javaboy.tienchin.clue.domain.Clue;
+import org.javaboy.tienchin.clue.domain.vo.ClueSummary;
 import org.javaboy.tienchin.clue.service.IClueService;
 import org.javaboy.tienchin.common.annotation.Log;
+import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
+import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,7 +30,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/tienchin/clue")
-public class ClueController {
+public class ClueController extends BaseController {
 
     @Autowired
     IClueService clueService;
@@ -62,5 +66,13 @@ public class ClueController {
         return activityService.getActivityByChannelId(channelId);
     }
 
+
+    @PreAuthorize("@ss.hasPermi('tienchin:clue:list')")
+    @GetMapping("/list")
+    public TableDataInfo list() {
+        startPage();
+        List<ClueSummary> list = clueService.selectClueList();
+        return getDataTable(list);
+    }
 
 }
