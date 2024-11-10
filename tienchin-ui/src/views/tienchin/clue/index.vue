@@ -157,9 +157,9 @@
       <el-form ref="clueAssignRef" :model="form" :rules="rules">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="归属部门" prop="deptId">
+            <el-form-item label="归属部门" prop="departmentId">
               <el-tree-select
-                  v-model="aasignForm.deptId"
+                  v-model="assignForm.departmentId"
                   :data="deptOptions"
                   :props="{ value: 'id', label: 'label', children: 'children' }"
                   value-key="id"
@@ -171,23 +171,14 @@
           </el-col>
 
           <el-col :span="12">
-            <el-form-item label="分配给" prop="aasignForm.userId">
-              <!--              <el-select v-model="aasignForm.userId" placeholder="请选择用户"-->
-              <!--                         style="width: 100%">-->
-              <!--                <el-option-->
-              <!--                    v-for="user in userList"-->
-              <!--                    :key="user.userId"-->
-              <!--                    :value="user.userId"-->
-              <!--                    :label="user.nickName">-->
-              <!--                </el-option>-->
-              <!--              </el-select>-->
+            <el-form-item label="分配给" prop="nickName">
 
-              <el-select v-model="aasignForm.userId" placeholder="请选择用户">
+              <el-select v-model="assignForm.nickName" placeholder="请选择用户" @change="assignUserChange">
                 <el-option
                     v-for="item in userList"
                     :key="item.userId"
                     :label="item.nickName"
-                    :value="item.userId">
+                    :value="{value:item.userId,userName:item.userName,nickName:item.nickName,deptId:item.deptId}">
                 </el-option>
               </el-select>
 
@@ -322,7 +313,7 @@ const deptOptions = ref(undefined);
 
 const data = reactive({
   form: {},
-  aasignForm: {},
+  assignForm: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -339,7 +330,7 @@ const data = reactive({
   }
 });
 
-const {queryParams, form, rules, aasignForm} = toRefs(data);
+const {queryParams, form, rules, assignForm} = toRefs(data);
 
 /** 查询线索列表 */
 function getList() {
@@ -473,20 +464,29 @@ function getDeptTree() {
   });
 }
 
-function handleAssign() {
+function handleAssign(data) {
+  assignForm.value.assignId = data.clueId;
   getDeptTree();
   assignClueDialog.value = true;
 }
 
 function handleDeptChange() {
-  aasignForm.value.userId = undefined;
+  assignForm.value.nickName = undefined;
   initUserList();
 }
 
 function initUserList() {
-  listUsers(aasignForm.value.deptId).then(response => {
+  listUsers(assignForm.value.departmentId).then(response => {
     userList.value = response.data;
   })
+}
+
+function assignUserChange(data) {
+  assignForm.value.nickName= data.nickName;
+  assignForm.value.userId= data.userId;
+  assignForm.value.userName= data.userName;
+  assignForm.value.deptId= data.deptId;
+
 }
 
 

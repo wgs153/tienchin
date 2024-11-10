@@ -142,7 +142,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select user_id, email from sys_user where email = #{email} limit 1
 	</select>
 	<select id="getUsersByDeptId" resultMap="SysUserResult"	parameterType="java.lang.Long">
-		select su.user_id,su.nick_name
+		select su.user_id,su.nick_name,su.user_name,su.dept_id
 		from sys_user su,sys_dept sd
 		where su.dept_id=sd.dept_id and (find_in_set(#{deptId}, sd.ancestors) or sd.dept_id = #{deptId})
 	</select>
