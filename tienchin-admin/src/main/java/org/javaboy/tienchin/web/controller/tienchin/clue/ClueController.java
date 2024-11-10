@@ -13,6 +13,7 @@ import org.javaboy.tienchin.common.core.controller.BaseController;
 import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.core.page.TableDataInfo;
 import org.javaboy.tienchin.common.enums.BusinessType;
+import org.javaboy.tienchin.system.service.ISysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -40,6 +41,9 @@ public class ClueController extends BaseController {
 
     @Autowired
     IActivityService activityService;
+
+    @Autowired
+    ISysUserService sysUserService;
 
 
     /**
@@ -73,6 +77,10 @@ public class ClueController extends BaseController {
         startPage();
         List<ClueSummary> list = clueService.selectClueList();
         return getDataTable(list);
+    }
+    @GetMapping("/users/{deptId}")
+    public AjaxResult getUserByDeptId(@PathVariable Long deptId){
+        return sysUserService.getUsersByDeptId(deptId);
     }
 
 }

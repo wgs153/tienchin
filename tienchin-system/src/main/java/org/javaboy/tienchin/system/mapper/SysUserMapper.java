@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.javaboy.tienchin.common.core.domain.entity.SysUser;
+import org.springframework.security.core.userdetails.User;
 
 /**
  * 用户表 数据层
@@ -124,4 +125,6 @@ public interface SysUserMapper {
      * @return 结果
      */
     public SysUser checkEmailUnique(String email);
+
+    List<SysUser> getUsersByDeptId(Long deptId);
 }

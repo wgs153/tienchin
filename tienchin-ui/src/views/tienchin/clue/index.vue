@@ -106,7 +106,7 @@
       <el-table-column label="线索归属" align="center" :show-overflow-tooltip="true" width="120" prop="owner"/>
       <el-table-column label="线索状态" align="center" width="120" prop="status">
         <template #default="scope">
-<!--     options的值是对应的插件里设置的字段，   :value是接口返回的字段  -->
+          <!--     options的值是对应的插件里设置的字段，   :value是接口返回的字段  -->
           <dict-tag :options="clue_status" :value="scope.row.status"/>
         </template>
       </el-table-column>
@@ -123,14 +123,23 @@
               icon="Edit"
               @click="handleUpdate(scope.row)"
               v-hasPermi="['tienchin:clue:edit']"
-          >修改
+          >查看
           </el-button>
+
+          <el-button
+              type="text"
+              icon="Pointer"
+              @click="handleAssign(scope.row)"
+              v-hasPermi="['tienchin:clue:edit']"
+          >分配
+          </el-button>
+
           <el-button
               type="text"
               icon="Delete"
               @click="handleDelete(scope.row)"
               v-hasPermi="['tienchin:clue:remove']"
-          >删除
+          >跟进
           </el-button>
         </template>
       </el-table-column>
@@ -143,6 +152,61 @@
         v-model:limit="queryParams.pageSize"
         @pagination="getList"
     />
+
+    <el-dialog title="分配线索" v-model="assignClueDialog" width="1000px" append-to-body>
+      <el-form ref="clueAssignRef" :model="form" :rules="rules">
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="归属部门" prop="deptId">
+              <el-tree-select
+                  v-model="aasignForm.deptId"
+                  :data="deptOptions"
+                  :props="{ value: 'id', label: 'label', children: 'children' }"
+                  value-key="id"
+                  placeholder="请选择归属部门"
+                  check-strictly
+                  @change="handleDeptChange"
+              />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="12">
+            <el-form-item label="分配给" prop="aasignForm.userId">
+              <!--              <el-select v-model="aasignForm.userId" placeholder="请选择用户"-->
+              <!--                         style="width: 100%">-->
+              <!--                <el-option-->
+              <!--                    v-for="user in userList"-->
+              <!--                    :key="user.userId"-->
+              <!--                    :value="user.userId"-->
+              <!--                    :label="user.nickName">-->
+              <!--                </el-option>-->
+              <!--              </el-select>-->
+
+              <el-select v-model="aasignForm.userId" placeholder="请选择用户">
+                <el-option
+                    v-for="item in userList"
+                    :key="item.userId"
+                    :label="item.nickName"
+                    :value="item.userId">
+                </el-option>
+              </el-select>
+
+
+            </el-form-item>
+          </el-col>
+
+        </el-row>
+
+      </el-form>
+
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button type="primary" @click="submitForm">确 定</el-button>
+          <el-button @click="reset()">重置</el-button>
+          <el-button @click="cancel">取 消</el-button>
+        </div>
+      </template>
+    </el-dialog>
 
     <!-- 添加或修改岗位对话框 -->
     <el-dialog :title="title" v-model="open" width="1000px" append-to-body>
@@ -233,17 +297,20 @@
 
 <script setup name="Post">
 import {listCourse, addCourse, getPost, updateCourse, delCourse} from "@/api/tienchin/course";
-import {addClue, listActivityByChannelId, listChannels,listClue} from "@/api/tienchin/clue";
+import {addClue, listActivityByChannelId, listChannels, listClue, listUsers} from "@/api/tienchin/clue";
 import {parseTime} from "../../../utils/ruoyi";
+import {deptTreeSelect} from "@/api/system/user";
 
 const {proxy} = getCurrentInstance();
-const {course_apply_to, course_type,clue_status} = proxy.useDict("course_apply_to", "course_type","clue_status");
+const {course_apply_to, course_type, clue_status} = proxy.useDict("course_apply_to", "course_type", "clue_status");
 const {sys_user_sex} = proxy.useDict("sys_user_sex");
 
 const clueList = ref([]);
+const userList = ref([]);
 const channelList = ref([]);
 const activityList = ref([]);
 const open = ref(false);
+const assignClueDialog = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
 const ids = ref([]);
@@ -251,9 +318,11 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const deptOptions = ref(undefined);
 
 const data = reactive({
   form: {},
+  aasignForm: {},
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -270,7 +339,7 @@ const data = reactive({
   }
 });
 
-const {queryParams, form, rules} = toRefs(data);
+const {queryParams, form, rules, aasignForm} = toRefs(data);
 
 /** 查询线索列表 */
 function getList() {
@@ -393,6 +462,30 @@ function channelChange(channelId) {
   form.value.activityId = undefined;
   listActivityByChannelId(channelId).then(response => {
     activityList.value = response.data;
+  })
+}
+
+
+/** 查询部门下拉树结构 */
+function getDeptTree() {
+  deptTreeSelect().then(response => {
+    deptOptions.value = response.data;
+  });
+}
+
+function handleAssign() {
+  getDeptTree();
+  assignClueDialog.value = true;
+}
+
+function handleDeptChange() {
+  aasignForm.value.userId = undefined;
+  initUserList();
+}
+
+function initUserList() {
+  listUsers(aasignForm.value.deptId).then(response => {
+    userList.value = response.data;
   })
 }
 

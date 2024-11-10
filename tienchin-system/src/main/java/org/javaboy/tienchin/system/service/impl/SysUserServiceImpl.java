@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.validation.Validator;
 
+import org.javaboy.tienchin.common.core.domain.AjaxResult;
 import org.javaboy.tienchin.common.utils.StringUtils;
 import org.javaboy.tienchin.system.domain.SysPost;
 import org.javaboy.tienchin.system.domain.SysUserPost;
@@ -14,6 +15,7 @@ import org.javaboy.tienchin.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -500,5 +502,11 @@ public class SysUserServiceImpl implements ISysUserService {
             successMsg.insert(0, "恭喜您，数据已全部导入成功！共 " + successNum + " 条，数据如下：");
         }
         return successMsg.toString();
+    }
+
+    @Override
+    public AjaxResult getUsersByDeptId(Long deptId) {
+        List<SysUser> users = userMapper.getUsersByDeptId(deptId);
+        return AjaxResult.success(users);
     }
 }
