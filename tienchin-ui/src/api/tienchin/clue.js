@@ -75,3 +75,14 @@ export function listUsers(deptId) {
         method: 'get'
     })
 }
+// 分配线索
+export function assignClue(data){
+    return request({
+        url: '/tienchin/assignment',
+        method: 'post',
+        data: data
+    })
+}
+
+
+

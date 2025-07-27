@@ -178,7 +178,7 @@
                     v-for="item in userList"
                     :key="item.userId"
                     :label="item.nickName"
-                    :value="{value:item.userId,userName:item.userName,nickName:item.nickName,deptId:item.deptId}">
+                    :value="{userId:item.userId,userName:item.userName,nickName:item.nickName,deptId:item.deptId}">
                 </el-option>
               </el-select>
 
@@ -192,9 +192,8 @@
 
       <template #footer>
         <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="reset()">重置</el-button>
-          <el-button @click="cancel">取 消</el-button>
+          <el-button type="primary" @click="handleAssignClue">确 定</el-button>
+          <el-button @click="cancelAssignClue">取 消</el-button>
         </div>
       </template>
     </el-dialog>
@@ -288,7 +287,7 @@
 
 <script setup name="Post">
 import {listCourse, addCourse, getPost, updateCourse, delCourse} from "@/api/tienchin/course";
-import {addClue, listActivityByChannelId, listChannels, listClue, listUsers} from "@/api/tienchin/clue";
+import {addClue, listActivityByChannelId, listChannels, listClue, listUsers,assignClue} from "@/api/tienchin/clue";
 import {parseTime} from "../../../utils/ruoyi";
 import {deptTreeSelect} from "@/api/system/user";
 
@@ -362,6 +361,14 @@ function reset() {
   };
   proxy.resetForm("clueRef");
 }
+/** 分配页重置 */
+function resetAssignForm() {
+  assignForm.value = {
+    departmentId:undefined,
+    nickName:undefined
+  };
+  proxy.resetForm("clueAssignRef");
+}
 
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -421,6 +428,21 @@ function submitForm() {
     }
   });
 }
+// 分配对话框（assignClueDialog）-取消
+function cancelAssignClue(){
+  assignClueDialog.value = false;
+  resetAssignForm();
+}
+
+
+// 分配线索执行方法
+function handleAssignClue(){
+  assignClue(assignForm.value).then(response=>{
+    getList();
+    assignClueDialog.value = false;
+  })
+  resetAssignForm();
+}
 
 /** 删除按钮操作 */
 function handleDelete(row) {
@@ -465,6 +487,7 @@ function getDeptTree() {
 }
 
 function handleAssign(data) {
+  reset();
   assignForm.value.assignId = data.clueId;
   getDeptTree();
   assignClueDialog.value = true;
