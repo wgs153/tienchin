@@ -29,7 +29,7 @@ public class Assignment implements Serializable {
     private Integer aid;
 
     /**
-     * 1：线索，2：商机
+     * 0：线索，1：商机
      */
     private Integer type;
 
