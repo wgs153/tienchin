@@ -130,7 +130,7 @@
               type="text"
               icon="Pointer"
               @click="handleAssign(scope.row)"
-              v-hasPermi="['tienchin:clue:edit']"
+              v-hasPermi="['tienchin:clue:assignment']"
           >分配
           </el-button>
 
