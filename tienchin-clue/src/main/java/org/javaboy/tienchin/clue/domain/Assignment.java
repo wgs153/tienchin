@@ -5,6 +5,9 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -36,22 +39,25 @@ public class Assignment implements Serializable {
     /**
      * 线索或商机的ID
      */
-//    private Integer assignId;
+    @NotNull(message="{assignment.assignId.NotNull}")
     private Integer assignId;
 
     /**
      * 所属用户的id
      */
+    @NotNull(message="{assignment.userId.NotNull}")
     private Long userId;
 
     /**
      * 所属的用户名
      */
+    @NotBlank(message="{assignment.userName.NotBlank}")
     private String userName;
 
     /**
      * 所属部门ID
      */
+    @NotNull(message="{assignment.deptId.NotNull}")
     private Long deptId;
 
     /**
